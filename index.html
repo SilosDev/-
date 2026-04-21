@@ -16,746 +16,480 @@
             padding: 0;
             box-sizing: border-box;
         }
-        html, body {
-            background: #000000;
-            min-height: 100vh;
-        }
         body {
-            background: radial-gradient(ellipse at 40% 30%, #0a0518, #000000);
+            background: #05050A;
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 24px;
             position: relative;
             overflow-x: hidden;
         }
-        canvas#particleCanvas {
+        .animated-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
             z-index: 0;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2a 50%, #0a0a1a 100%);
         }
-        .lottie-trigger {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 150px;
-            height: 150px;
-            z-index: 1;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        .lottie-bg {
+        .animated-bg::before {
+            content: '';
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            width: 100px;
-            height: 100px;
-            opacity: 0.25;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 8px);
+            animation: shiftBg 40s linear infinite;
+        }
+        @keyframes shiftBg {
+            0% { transform: translate(0,0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        .floating-lottie {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            z-index: 0;
+            opacity: 0.15;
             pointer-events: none;
-            z-index: 0;
         }
-        .orb {
-            position: fixed;
-            width: 80vw;
-            height: 80vw;
-            background: radial-gradient(circle, rgba(180, 60, 220, 0.12), transparent 70%);
-            border-radius: 50%;
-            top: -30%;
-            right: -30%;
-            z-index: 0;
-            animation: floatGlow 22s infinite alternate ease-in-out;
+        .glass-card {
+            background: rgba(15, 10, 30, 0.55);
+            backdrop-filter: blur(16px);
+            border-radius: 48px;
+            border: 1px solid rgba(180, 100, 255, 0.25);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
-        .orb2 {
-            position: fixed;
-            width: 70vw;
-            height: 70vw;
-            background: radial-gradient(circle, rgba(0, 200, 255, 0.08), transparent 70%);
-            border-radius: 50%;
-            bottom: -40%;
-            left: -20%;
-            z-index: 0;
-            animation: floatGlow2 19s infinite alternate ease-in-out;
-        }
-        @keyframes floatGlow {
-            0% { transform: translate(0,0) scale(1); opacity: 0.3; }
-            100% { transform: translate(-70px, 90px) scale(1.5); opacity: 0.6; }
-        }
-        @keyframes floatGlow2 {
-            0% { transform: translate(0,0) scale(1); opacity: 0.2; }
-            100% { transform: translate(80px, -70px) scale(1.4); opacity: 0.5; }
-        }
-        .login-card {
+        .login-container {
             position: relative;
             z-index: 10;
-            width: 380px;
-            background: rgba(5, 3, 15, 0.75);
-            backdrop-filter: blur(24px);
-            border-radius: 48px;
-            border: 1px solid rgba(200, 80, 255, 0.4);
-            padding: 44px 36px;
-            box-shadow: 0 30px 50px rgba(0,0,0,0.7);
+            width: 400px;
+            background: rgba(10, 8, 22, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 56px;
+            border: 1px solid rgba(200, 120, 255, 0.4);
+            padding: 48px 40px;
+            text-align: center;
         }
-        .login-card h1 {
-            font-size: 36px;
+        .login-container h1 {
+            font-size: 42px;
             font-weight: 800;
-            background: linear-gradient(135deg, #ff44cc, #aa44ff);
+            background: linear-gradient(135deg, #ffffff, #dd88ff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
-        .login-card p {
-            color: #bb99ff;
+        .login-container p {
+            color: #aa99dd;
             margin-bottom: 32px;
-            font-size: 13px;
         }
-        .login-card input {
+        .login-container input {
             width: 100%;
-            background: rgba(10, 5, 25, 0.9);
-            border: 1px solid #6633aa;
-            border-radius: 40px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #5533aa;
+            border-radius: 60px;
             padding: 14px 20px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             color: white;
             font-size: 15px;
+        }
+        .login-container input:focus {
+            border-color: #ff66ee;
             outline: none;
         }
-        .login-card input:focus {
-            border-color: #ff44cc;
-            box-shadow: 0 0 15px rgba(255,68,204,0.3);
-        }
-        .login-card button {
+        .login-container button {
             width: 100%;
             background: linear-gradient(90deg, #aa44ff, #ff44cc);
             border: none;
             padding: 14px;
-            border-radius: 40px;
+            border-radius: 60px;
             font-weight: bold;
             font-size: 18px;
             color: white;
             cursor: pointer;
-            transition: 0.1s;
         }
-        .login-card button:active { transform: scale(0.97); }
-        .error { color: #ff6688; text-align: center; margin-top: 16px; font-size: 13px; }
-        
         .main-panel {
             display: none;
             position: relative;
             z-index: 10;
-            width: 1100px;
-            max-width: 95%;
-            background: rgba(8, 4, 20, 0.65);
-            backdrop-filter: blur(28px);
+            width: 1200px;
+            max-width: 98%;
+            background: rgba(8, 5, 20, 0.6);
+            backdrop-filter: blur(20px);
             border-radius: 56px;
             border: 1px solid rgba(200, 100, 255, 0.35);
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.1);
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .panel-header {
-            padding: 28px 36px 0 36px;
+        .panel-top {
+            padding: 28px 36px;
+            border-bottom: 1px solid rgba(200,100,255,0.2);
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            border-bottom: 1px solid rgba(200,100,255,0.2);
-            padding-bottom: 18px;
+            align-items: center;
         }
-        .panel-header h2 {
+        .panel-top h2 {
             font-size: 28px;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #ff66ee);
+            background: linear-gradient(135deg, #fff, #ff88ee);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        .version-tag {
-            background: rgba(100, 50, 160, 0.6);
-            padding: 5px 14px;
-            border-radius: 40px;
-            font-size: 10px;
-            color: #ffccff;
-        }
-        .tabs-row {
+        .tabs {
             display: flex;
-            gap: 12px;
-            padding: 22px 36px 0 36px;
-            flex-wrap: wrap;
+            gap: 8px;
+            padding: 0 36px;
+            margin-top: 16px;
         }
-        .tab-btn {
-            background: rgba(30, 15, 55, 0.6);
-            border: none;
-            padding: 10px 28px;
+        .tab {
+            background: rgba(30, 20, 50, 0.6);
+            padding: 12px 28px;
             border-radius: 40px;
-            font-weight: 600;
             color: #ccaaee;
             cursor: pointer;
+            font-weight: 600;
             transition: 0.2s;
-            font-size: 14px;
         }
-        .tab-btn.active {
+        .tab.active {
             background: linear-gradient(120deg, #aa44ff, #ff44cc);
             color: white;
-            box-shadow: 0 0 15px rgba(170,68,255,0.5);
+            box-shadow: 0 0 12px rgba(170,68,255,0.5);
         }
-        .tab-pane {
+        .tab-content {
             display: none;
-            padding: 28px 36px 36px 36px;
-            animation: fadePane 0.3s ease;
+            padding: 32px 36px;
+            animation: fade 0.3s;
         }
-        .tab-pane.active { display: block; }
-        @keyframes fadePane {
-            from { opacity: 0; transform: translateY(6px); }
+        .tab-content.active { display: block; }
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .glass-card {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 40px;
-            padding: 26px;
-            margin-bottom: 24px;
-            border: 1px solid rgba(200,100,255,0.2);
-            backdrop-filter: blur(4px);
-        }
-        .stats-row {
+        .stats-grid {
             display: flex;
-            gap: 20px;
-            margin-bottom: 24px;
+            gap: 24px;
+            margin-bottom: 32px;
         }
-        .stat-box {
-            background: rgba(15, 8, 30, 0.8);
-            border-radius: 36px;
-            padding: 24px 16px;
+        .stat {
+            background: rgba(0,0,0,0.4);
+            border-radius: 32px;
+            padding: 24px;
             flex: 1;
             text-align: center;
-            border: 1px solid rgba(200,100,255,0.3);
-            transition: 0.2s;
+            border: 1px solid rgba(200,100,255,0.2);
         }
-        .stat-box:hover { transform: translateY(-3px); border-color: #ff66ee; }
         .stat-number {
-            font-size: 42px;
+            font-size: 44px;
             font-weight: 800;
-            color: #ffbbff;
+            color: #ffccff;
         }
-        .label {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #aa88dd;
-            margin-top: 8px;
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #bbaaee;
+            font-size: 12px;
         }
         input, select {
-            background: rgba(8, 4, 20, 0.9);
-            border: 1px solid #5533aa;
-            border-radius: 36px;
-            padding: 12px 20px;
             width: 100%;
-            color: #f0eaff;
-            font-size: 14px;
-            outline: none;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #5533aa;
+            border-radius: 32px;
+            padding: 12px 18px;
+            color: white;
         }
-        input:focus, select:focus {
-            border-color: #ff44cc;
-            box-shadow: 0 0 10px rgba(255,68,204,0.2);
+        .row-2, .row-3, .row-4 {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
         }
-        .double { display: flex; gap: 16px; }
-        .triple { display: flex; gap: 16px; }
-        .quad { display: flex; gap: 16px; }
-        .btn {
+        .row-2 > *, .row-3 > *, .row-4 > * { flex: 1; }
+        button {
             border: none;
             padding: 12px 24px;
-            border-radius: 44px;
-            font-weight: 700;
+            border-radius: 40px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 15px;
-            transition: 0.1s;
         }
-        .btn:active { transform: scale(0.97); }
-        .btn-exec { background: linear-gradient(90deg, #aa44ff, #ff44cc); color: white; }
-        .btn-stop { background: #882244; color: #ffbbdd; border: 1px solid #ff66aa; }
-        .btn-spoof { background: linear-gradient(90deg, #44aaff, #44ffcc); color: black; }
-        .logs-window {
-            position: relative;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 36px;
+        .btn-primary {
+            background: linear-gradient(90deg, #aa44ff, #ff44cc);
+            color: white;
+        }
+        .btn-danger {
+            background: #882244;
+            color: white;
+        }
+        .btn-spoof {
+            background: linear-gradient(90deg, #44aaff, #44ffcc);
+            color: black;
+        }
+        .logs-area {
+            background: rgba(0,0,0,0.6);
+            border-radius: 32px;
             padding: 20px;
-            height: 280px;
+            height: 260px;
             overflow-y: auto;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: monospace;
             font-size: 11px;
             color: #aaffdd;
-            border: 1px solid rgba(200,100,255,0.2);
         }
         .toast {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: rgba(25, 10, 45, 0.95);
-            backdrop-filter: blur(24px);
-            border-left: 5px solid #ff44cc;
-            padding: 14px 28px;
+            background: #1a0f2a;
+            backdrop-filter: blur(16px);
+            border-left: 4px solid #ff44cc;
+            padding: 12px 24px;
             border-radius: 60px;
-            color: #ffeef8;
-            font-size: 13px;
-            z-index: 999;
-            transform: translateX(500px);
-            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2);
-            box-shadow: 0 6px 20px black;
-            font-weight: 500;
+            color: white;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: 0.3s;
         }
         .toast.show { transform: translateX(0); }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #1a1030; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #cc66ff; border-radius: 10px; }
-        .spoof-result {
-            background: #1a0a2a;
+        .spoof-output {
+            background: #0a0520;
             border-radius: 28px;
             padding: 16px;
-            margin-top: 16px;
+            margin-top: 20px;
             font-family: monospace;
             font-size: 12px;
-            color: #00ffaa;
-            border: 1px solid #44ffaa33;
+            color: #44ffaa;
         }
     </style>
 </head>
 <body>
-<canvas id="particleCanvas"></canvas>
-<div class="lottie-trigger" id="triggerLottie"></div>
-<div class="orb"></div>
-<div class="orb2"></div>
+<div class="animated-bg"></div>
+<div class="floating-lottie" id="mainLottie"></div>
 
-<div id="loginView" class="login-card">
+<div id="loginView" class="login-container">
     <h1>SILK BY ??</h1>
-    <p>next generation panel</p>
+    <p>next generation security panel</p>
     <input type="text" id="loginUser" placeholder="username">
     <input type="password" id="loginPass" placeholder="password">
-    <button id="doLogin">Login</button>
-    <div id="loginMsg" class="error"></div>
+    <button id="doLogin">Access</button>
+    <div id="loginError" style="color:#ff6688; margin-top:16px;"></div>
 </div>
 
 <div id="appPanel" class="main-panel">
-    <div class="panel-header">
+    <div class="panel-top">
         <h2>SILK <span style="color:#ff66ee">BY ??</span></h2>
-        <div class="version-tag">v10.0 // DUAL CORE</div>
+        <div class="version-tag" style="background:#2a1a4a; padding:6px 16px; border-radius:40px; font-size:11px;">v11.0</div>
     </div>
-    <div class="tabs-row">
-        <button class="tab-btn active" data-tab="tabDash">Dashboard</button>
-        <button class="tab-btn" data-tab="tabAttack">DDoS Inject</button>
-        <button class="tab-btn" data-tab="tabSpoofer">Vinted Spoofer</button>
-        <button class="tab-btn" data-tab="tabLogs">Logs</button>
-    </div>
-
-    <div id="tabDash" class="tab-pane active">
-        <div class="stats-row">
-            <div class="stat-box"><div class="stat-number" id="statPacketsDash">0</div><div class="label">Packets Sent</div></div>
-            <div class="stat-box"><div class="stat-number" id="statStatusDash">Idle</div><div class="label">Status</div></div>
-            <div class="stat-box"><div class="stat-number" id="statPpsDash">0</div><div class="label">PPS</div></div>
-        </div>
-        <div class="glass-card">
-            <div style="font-weight:600; margin-bottom:12px; color:#ccb5ff;">Current Target</div>
-            <div id="dashTargetInfo" style="font-size:18px; font-weight:500;">—</div>
-            <div style="margin-top:12px; font-size:12px; color:#aa99dd;" id="dashMethodInfo"></div>
-        </div>
+    <div class="tabs">
+        <div class="tab active" data-tab="dashboard">Dashboard</div>
+        <div class="tab" data-tab="ddos">DDoS Inject</div>
+        <div class="tab" data-tab="spoofer">Vinted Spoofer</div>
+        <div class="tab" data-tab="logs">Logs</div>
     </div>
 
-    <div id="tabAttack" class="tab-pane">
-        <div class="glass-card">
-            <div style="margin-bottom: 20px;">
-                <label style="display:block; margin-bottom:8px; color:#bbaaee;">Target (IP / Domain)</label>
-                <input type="text" id="attackTarget" placeholder="example.com | 1.2.3.4">
-            </div>
-            <div class="triple">
-                <div style="flex:1">
-                    <label style="display:block; margin-bottom:8px; color:#bbaaee;">Method</label>
-                    <select id="attackMethod">
-                        <option value="HTTP FLOOD">HTTP Flood (L7)</option>
-                        <option value="UDP FLOOD">UDP Flood (L4)</option>
-                        <option value="SYN FLOOD">SYN Flood + Spoof</option>
-                        <option value="ICMP STORM">ICMP Storm</option>
-                        <option value="TCP RST">TCP RST Flood</option>
-                        <option value="GRE IP">GRE IP Flood</option>
-                    </select>
-                </div>
-                <div style="flex:1">
-                    <label style="display:block; margin-bottom:8px; color:#bbaaee;">Port</label>
-                    <input type="number" id="attackPort" value="80" min="1" max="65535">
-                </div>
-                <div style="flex:1">
-                    <label style="display:block; margin-bottom:8px; color:#bbaaee;">Packet Size (bytes)</label>
-                    <input type="number" id="attackPacketSize" value="512" min="64" max="65507">
-                </div>
-            </div>
-            <div class="quad" style="margin-top: 16px;">
-                <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">Threads</label><input type="number" id="attackThreads" value="75" min="1"></div>
-                <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">Delay (ms)</label><input type="number" id="attackDelay" value="0" min="0" max="1000"></div>
-                <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">Spoof IP</label><select id="attackSpoof"><option value="true">ON</option><option value="false">OFF</option></select></div>
-                <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">Random Payload</label><select id="attackRandom"><option value="true">ON</option><option value="false">OFF</option></select></div>
-            </div>
-            <div style="margin: 20px 0;">
-                <label style="display:block; margin-bottom:8px; color:#bbaaee;">Duration (seconds, 0 = infinite)</label>
-                <input type="number" id="attackDuration" value="35" min="0">
-            </div>
-            <div style="display: flex; gap: 16px; margin-top: 10px;">
-                <button class="btn btn-exec" id="executeBtn">Inject Process</button>
-                <button class="btn btn-stop" id="terminateBtn">Terminate</button>
-            </div>
+    <div id="dashboard" class="tab-content active">
+        <div class="stats-grid">
+            <div class="stat"><div class="stat-number" id="statPackets">0</div><div>Packets</div></div>
+            <div class="stat"><div class="stat-number" id="statStatus">Idle</div><div>Status</div></div>
+            <div class="stat"><div class="stat-number" id="statPps">0</div><div>PPS</div></div>
+        </div>
+        <div class="stat" style="text-align:left;">
+            <div style="color:#ccb5ff; margin-bottom:8px;">Current Target</div>
+            <div id="dashTarget" style="font-size:18px;">—</div>
         </div>
     </div>
 
-    <div id="tabSpoofer" class="tab-pane">
-        <div class="glass-card">
-            <div style="margin-bottom: 20px;">
-                <label style="display:block; margin-bottom:8px; color:#bbaaee;">Vinted Account HWID Spoofer</label>
-                <p style="color:#aa99dd; font-size:12px; margin-bottom:16px;">Generate fake hardware identity for Vinted bypass</p>
-            </div>
-            <div class="quad">
-                <div style="flex:1"><button class="btn btn-spoof" id="spoofHwidBtn" style="width:100%">Spoof HWID</button></div>
-                <div style="flex:1"><button class="btn btn-spoof" id="spoofMacBtn" style="width:100%">Spoof MAC</button></div>
-                <div style="flex:1"><button class="btn btn-spoof" id="spoofIpBtn" style="width:100%">Spoof IP</button></div>
-                <div style="flex:1"><button class="btn btn-spoof" id="spoofDeviceBtn" style="width:100%">Spoof Device</button></div>
-            </div>
-            <div style="margin-top: 20px;">
-                <button class="btn btn-exec" id="spoofAllBtn" style="width:100%">Spoof All (Full Mask)</button>
-            </div>
-            <div id="spoofResult" class="spoof-result">
-                [ready] Click any spoof button
-            </div>
+    <div id="ddos" class="tab-content">
+        <div class="row-3">
+            <div class="form-group"><label>Target</label><input type="text" id="ddosTarget" placeholder="example.com / IP"></div>
+            <div class="form-group"><label>Method</label><select id="ddosMethod"><option>HTTP Flood</option><option>UDP Flood</option><option>SYN Flood</option><option>ICMP Storm</option><option>TCP RST</option></select></div>
+            <div class="form-group"><label>Port</label><input type="number" id="ddosPort" value="80"></div>
+        </div>
+        <div class="row-4">
+            <div class="form-group"><label>Threads</label><input type="number" id="ddosThreads" value="80"></div>
+            <div class="form-group"><label>Packet Size</label><input type="number" id="ddosSize" value="512"></div>
+            <div class="form-group"><label>Delay (ms)</label><input type="number" id="ddosDelay" value="0"></div>
+            <div class="form-group"><label>Spoof IP</label><select id="ddosSpoof"><option>OFF</option><option>ON</option></select></div>
+        </div>
+        <div class="row-2">
+            <div class="form-group"><label>Duration (sec)</label><input type="number" id="ddosDuration" value="30"></div>
+            <div class="form-group"><label>Random Payload</label><select id="ddosRandom"><option>OFF</option><option>ON</option></select></div>
+        </div>
+        <div style="display:flex; gap:16px;">
+            <button class="btn-primary" id="startInject">Inject Process</button>
+            <button class="btn-danger" id="stopInject">Terminate</button>
         </div>
     </div>
 
-    <div id="tabLogs" class="tab-pane">
-        <div class="logs-window" id="logsContainer">
-            <div>[system] SILK BY ?? v10.0 online</div>
-            <div>[system] dual core ready</div>
-            <div class="lottie-bg" id="bgLottie"></div>
+    <div id="spoofer" class="tab-content">
+        <div class="row-4">
+            <button class="btn-spoof" id="spoofHwid">HWID Spoof</button>
+            <button class="btn-spoof" id="spoofMac">MAC Spoof</button>
+            <button class="btn-spoof" id="spoofIp">IP Spoof</button>
+            <button class="btn-spoof" id="spoofDevice">Device Spoof</button>
+        </div>
+        <button class="btn-primary" id="spoofAll" style="width:100%; margin-top:8px;">Full Mask Spoof</button>
+        <div id="spoofResult" class="spoof-output">[ready]</div>
+    </div>
+
+    <div id="logs" class="tab-content">
+        <div class="logs-area" id="logsContainer">
+            <div>[system] SILK BY ?? v11.0 ready</div>
         </div>
     </div>
 </div>
 
-<div id="toastMessage" class="toast">ready</div>
+<div id="toastMsg" class="toast">ready</div>
 
 <script>
-    let lottieContainer = document.getElementById('triggerLottie');
-    let bgLottieContainer = document.getElementById('bgLottie');
-    let lottieActive = false;
-    
-    function createLottieInContainer(container, src, size) {
-        container.innerHTML = '';
-        let lottie = document.createElement('dotlottie-wc');
-        lottie.setAttribute('src', src);
-        lottie.style.width = size;
-        lottie.style.height = size;
-        lottie.setAttribute('autoplay', '');
-        lottie.setAttribute('loop', 'false');
-        container.appendChild(lottie);
-        lottie.addEventListener('complete', function() {
-            container.innerHTML = '';
-        });
+    const mainLottie = document.getElementById('mainLottie');
+    if (mainLottie) {
+        const lottieEl = document.createElement('dotlottie-wc');
+        lottieEl.setAttribute('src', 'https://lottie.host/33ee256d-6df6-4829-9568-ff066f9c3de5/MsowL0wALe.lottie');
+        lottieEl.style.width = '100%';
+        lottieEl.style.height = '100%';
+        lottieEl.setAttribute('autoplay', '');
+        lottieEl.setAttribute('loop', '');
+        mainLottie.appendChild(lottieEl);
     }
-    
-    function playAnimationOnce() {
-        if (!lottieActive) {
-            lottieActive = true;
-            createLottieInContainer(lottieContainer, 'https://lottie.host/33ee256d-6df6-4829-9568-ff066f9c3de5/MsowL0wALe.lottie', '150px');
-            setTimeout(function() { lottieActive = false; }, 2000);
-        }
-    }
-    
-    if (bgLottieContainer) {
-        let bgLottie = document.createElement('dotlottie-wc');
-        bgLottie.setAttribute('src', 'https://lottie.host/18b6cf56-8790-4482-8cb4-9660091d3950/QzRV2EJcJH.lottie');
-        bgLottie.style.width = '100px';
-        bgLottie.style.height = '100px';
-        bgLottie.setAttribute('autoplay', '');
-        bgLottie.setAttribute('loop', '');
-        bgLottie.style.position = 'absolute';
-        bgLottie.style.bottom = '10px';
-        bgLottie.style.right = '10px';
-        bgLottie.style.opacity = '0.3';
-        bgLottie.style.pointerEvents = 'none';
-        bgLottieContainer.appendChild(bgLottie);
-    }
-    
-    setInterval(playAnimationOnce, 12000);
-    playAnimationOnce();
-    
-    const canvas = document.getElementById('particleCanvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
-    function resizeCanvas() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    class Particle {
-        constructor() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.size = Math.random() * 2.5 + 0.5;
-            this.speedX = (Math.random() - 0.5) * 0.8;
-            this.speedY = Math.random() * 1.2 + 0.1;
-            this.alpha = Math.random() * 0.5 + 0.1;
-            this.color = `rgba(180, 100, 255, ${this.alpha})`;
-        }
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if (this.x > width) this.x = 0;
-            if (this.x < 0) this.x = width;
-            if (this.y > height) this.y = 0;
-            if (this.y < 0) this.y = height;
-        }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = this.color;
-            ctx.fill();
-        }
-    }
-    for (let i = 0; i < 180; i++) particles.push(new Particle());
-    function animateParticles() {
-        ctx.clearRect(0, 0, width, height);
-        for (let p of particles) { p.update(); p.draw(); }
-        requestAnimationFrame(animateParticles);
-    }
-    animateParticles();
 
-    function toast(msg, isError) {
-        var t = document.getElementById('toastMessage');
+    function toast(msg, isErr) {
+        const t = document.getElementById('toastMsg');
         t.textContent = msg;
-        if (isError) { t.style.borderLeftColor = '#ff667a'; } else { t.style.borderLeftColor = '#ff44cc'; }
+        t.style.borderLeftColor = isErr ? '#ff667a' : '#ff44cc';
         t.classList.add('show');
-        setTimeout(function() { t.classList.remove('show'); }, 2600);
+        setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    const blockedDomains = ['youtube.com', 'www.youtube.com', 'youtu.be', 'facebook.com', 'www.facebook.com', 'instagram.com', 'www.instagram.com', 'twitter.com', 'www.twitter.com', 'x.com', 'tiktok.com', 'www.tiktok.com', 'discord.com', 'www.discord.com', 'google.com', 'www.google.com', 'twitch.tv', 'www.twitch.tv', 'reddit.com', 'www.reddit.com'];
-
-    function isValidTarget(target) {
-        let lowerTarget = target.toLowerCase();
-        for (let blocked of blockedDomains) {
-            if (lowerTarget.includes(blocked)) {
-                return { valid: false, reason: 'Social media platforms are blocked' };
-            }
-        }
-        let ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
-        let domainPattern = /^[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (ipPattern.test(lowerTarget)) {
-            let parts = lowerTarget.split('.');
-            for (let p of parts) {
-                if (parseInt(p) > 255) return { valid: false, reason: 'Invalid IP address' };
-            }
-            return { valid: true };
-        } else if (domainPattern.test(lowerTarget)) {
-            return { valid: true };
-        } else {
-            return { valid: false, reason: 'Invalid target' };
-        }
-    }
-
-    document.getElementById('doLogin').onclick = function() {
-        var u = document.getElementById('loginUser').value;
-        var p = document.getElementById('loginPass').value;
-        if (u === "Silos" && p === "Licka") {
+    document.getElementById('doLogin').onclick = () => {
+        const u = document.getElementById('loginUser').value;
+        const p = document.getElementById('loginPass').value;
+        if (u === 'Silos' && p === 'Licka') {
             document.getElementById('loginView').style.display = 'none';
             document.getElementById('appPanel').style.display = 'block';
-            toast("Access granted", false);
+            toast('Access granted', false);
         } else {
-            document.getElementById('loginMsg').innerText = "Invalid credentials";
-            toast("Login failed", true);
+            document.getElementById('loginError').innerText = 'Invalid credentials';
+            toast('Login failed', true);
         }
     };
 
-    var tabsBtns = document.querySelectorAll('.tab-btn');
-    var panes = document.querySelectorAll('.tab-pane');
-    for (var i = 0; i < tabsBtns.length; i++) {
-        tabsBtns[i].addEventListener('click', function() {
-            var id = this.getAttribute('data-tab');
-            for (var j = 0; j < tabsBtns.length; j++) {
-                tabsBtns[j].classList.remove('active');
-            }
-            this.classList.add('active');
-            for (var k = 0; k < panes.length; k++) {
-                panes[k].classList.remove('active');
-            }
+    const tabs = document.querySelectorAll('.tab');
+    const contents = document.querySelectorAll('.tab-content');
+    tabs.forEach(t => {
+        t.addEventListener('click', () => {
+            const id = t.getAttribute('data-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            t.classList.add('active');
+            contents.forEach(c => c.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         });
-    }
+    });
 
-    var attackActive = false;
-    var attackInterval = null;
-    var stopTimer = null;
-    var packetTotal = 0;
-    var currentPps = 0;
-    var currentTargetText = "";
-    var currentMethodText = "";
-
-    var logsDiv = document.getElementById('logsContainer');
-    var statPacketsSpan = document.getElementById('statPacketsDash');
-    var statStatusSpan = document.getElementById('statStatusDash');
-    var statPpsSpan = document.getElementById('statPpsDash');
-    var dashTargetSpan = document.getElementById('dashTargetInfo');
-    var dashMethodSpan = document.getElementById('dashMethodInfo');
+    let attackActive = false, attackInterval = null, stopTimer = null;
+    let packetTotal = 0, currentPps = 0, currentTarget = '', currentMethod = '';
+    const logsDiv = document.getElementById('logsContainer');
+    const statPackets = document.getElementById('statPackets');
+    const statStatus = document.getElementById('statStatus');
+    const statPps = document.getElementById('statPps');
+    const dashTarget = document.getElementById('dashTarget');
 
     function addLog(msg, isErr) {
-        var line = document.createElement('div');
-        var now = new Date();
-        var time = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
-        line.textContent = "[" + time + "] " + msg;
-        if (isErr) line.style.color = "#ffa5bb";
+        const line = document.createElement('div');
+        const t = new Date();
+        line.textContent = `[${t.getHours()}:${t.getMinutes()}:${t.getSeconds()}] ${msg}`;
+        if (isErr) line.style.color = '#ffa5bb';
         logsDiv.appendChild(line);
         line.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        if (!isErr) toast(msg.substring(0, 55), false);
+        if (!isErr) toast(msg.slice(0, 50), false);
     }
 
     function updateUI() {
-        statPacketsSpan.innerText = packetTotal;
-        statStatusSpan.innerText = attackActive ? "ATTACKING" : "IDLE";
-        statPpsSpan.innerText = currentPps;
-        dashTargetSpan.innerText = currentTargetText || "—";
-        dashMethodSpan.innerText = currentMethodText ? "Method: " + currentMethodText : "";
+        statPackets.innerText = packetTotal;
+        statStatus.innerText = attackActive ? 'ATTACKING' : 'IDLE';
+        statPps.innerText = currentPps;
+        dashTarget.innerText = currentTarget || '—';
     }
 
     function stopAttack() {
-        if (attackInterval) { clearInterval(attackInterval); attackInterval = null; }
-        if (stopTimer) { clearTimeout(stopTimer); stopTimer = null; }
+        if (attackInterval) clearInterval(attackInterval);
+        if (stopTimer) clearTimeout(stopTimer);
         attackActive = false;
         currentPps = 0;
         updateUI();
-        addLog("Attack terminated", true);
-        toast("Attack stopped", true);
+        addLog('Attack terminated', true);
+        toast('Attack stopped', true);
     }
 
     function startAttack() {
-        if (attackActive) { toast("Attack already running", true); return; }
-        var target = document.getElementById('attackTarget').value.trim();
-        if (!target) { toast("Enter target", true); return; }
-        
-        var validation = isValidTarget(target);
-        if (!validation.valid) {
-            toast(validation.reason, true);
-            addLog("ERROR: " + validation.reason, true);
+        if (attackActive) { toast('Already running', true); return; }
+        const target = document.getElementById('ddosTarget').value.trim();
+        if (!target) { toast('Enter target', true); return; }
+        const blocked = ['youtube.com', 'facebook.com', 'instagram.com', 'tiktok.com', 'twitter.com', 'google.com', 'discord.com'];
+        if (blocked.some(b => target.includes(b))) {
+            toast('Social media blocked', true);
+            addLog('ERROR: Social media target blocked', true);
             return;
         }
-        
-        var method = document.getElementById('attackMethod').value;
-        var port = parseInt(document.getElementById('attackPort').value);
-        if (isNaN(port) || port < 1 || port > 65535) port = 80;
-        var packetSize = parseInt(document.getElementById('attackPacketSize').value);
-        if (isNaN(packetSize) || packetSize < 64) packetSize = 512;
-        if (packetSize > 65507) packetSize = 65507;
-        var threads = parseInt(document.getElementById('attackThreads').value);
-        if (isNaN(threads) || threads < 1) threads = 50;
-        var delay = parseInt(document.getElementById('attackDelay').value);
-        if (isNaN(delay)) delay = 0;
-        var spoof = document.getElementById('attackSpoof').value === "true";
-        var randomPayload = document.getElementById('attackRandom').value === "true";
-        var duration = parseInt(document.getElementById('attackDuration').value);
-        if (isNaN(duration)) duration = 30;
+        const method = document.getElementById('ddosMethod').value;
+        const port = parseInt(document.getElementById('ddosPort').value) || 80;
+        const threads = Math.min(parseInt(document.getElementById('ddosThreads').value) || 50, 30);
+        const size = parseInt(document.getElementById('ddosSize').value) || 512;
+        const delay = parseInt(document.getElementById('ddosDelay').value) || 0;
+        const spoof = document.getElementById('ddosSpoof').value === 'ON';
+        const duration = parseInt(document.getElementById('ddosDuration').value) || 30;
+        const randomPayload = document.getElementById('ddosRandom').value === 'ON';
 
-        currentTargetText = target + ":" + port;
-        currentMethodText = method;
-        addLog("[INJECT] Target: " + target + ":" + port + " | " + method + " | Size:" + packetSize + " | Threads:" + threads + " | Delay:" + delay + "ms | Spoof:" + (spoof ? "ON" : "OFF") + " | Random:" + (randomPayload ? "ON" : "OFF") + " | Duration:" + duration + "s", false);
+        currentTarget = `${target}:${port}`;
+        currentMethod = method;
+        addLog(`[INJECT] ${target}:${port} | ${method} | thr:${threads} | size:${size} | spoof:${spoof} | dur:${duration}s`, false);
         attackActive = true;
         packetTotal = 0;
         updateUI();
 
-        attackInterval = setInterval(function() {
-            if (!attackActive) { clearInterval(attackInterval); attackInterval = null; return; }
-            var batch = threads;
-            if (batch > 24) batch = 24;
-            for (var i = 0; i < batch; i++) {
+        attackInterval = setInterval(() => {
+            if (!attackActive) { clearInterval(attackInterval); return; }
+            for (let i = 0; i < threads; i++) {
                 packetTotal++;
-                var spoofPart = "";
-                if (spoof) {
-                    spoofPart = " (spoof: " + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + ")";
-                }
-                var payload = "";
-                if (randomPayload) {
-                    payload = " | payload:" + Math.random().toString(36).substring(2, 10);
-                }
-                if (method === "HTTP FLOOD") addLog("[HTTP] GET /" + Math.random().toString(36).substring(5) + " -> " + target + ":" + port + spoofPart + payload, false);
-                else if (method === "UDP FLOOD") addLog("[UDP] " + target + ":" + port + " | size:" + packetSize + spoofPart + payload, false);
-                else if (method === "SYN FLOOD") addLog("[SYN] seq=" + Math.floor(Math.random()*9999999) + " window=65535 -> " + target + ":" + port + spoofPart, false);
-                else if (method === "ICMP STORM") addLog("[ICMP] echo request id=" + Math.floor(Math.random()*65535) + " -> " + target + spoofPart, false);
-                else if (method === "TCP RST") addLog("[TCP RST] flag=RST -> " + target + ":" + port + spoofPart, false);
-                else addLog("[GRE] encapsulated -> " + target + spoofPart, false);
+                const spoofPart = spoof ? ` (spoof: ${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)})` : '';
+                const randPayload = randomPayload ? ` | payload:${Math.random().toString(36).substring(4)}` : '';
+                if (method === 'HTTP Flood') addLog(`[HTTP] GET /${Math.random().toString(36).substring(4)} -> ${target}:${port}${spoofPart}${randPayload}`, false);
+                else if (method === 'UDP Flood') addLog(`[UDP] ${target}:${port} | size:${size}${spoofPart}`, false);
+                else if (method === 'SYN Flood') addLog(`[SYN] seq=${Math.floor(Math.random()*9999999)} -> ${target}:${port}${spoofPart}`, false);
+                else if (method === 'ICMP Storm') addLog(`[ICMP] echo id=${Math.floor(Math.random()*65535)} -> ${target}${spoofPart}`, false);
+                else addLog(`[TCP RST] flag=RST -> ${target}:${port}${spoofPart}`, false);
             }
-            currentPps = Math.floor(batch * (1000 / (200 + delay)));
+            currentPps = Math.floor(threads * (1000 / (200 + delay)));
             updateUI();
         }, 200 + delay);
 
-        if (duration > 0) {
-            stopTimer = setTimeout(function() {
-                if (attackActive) {
-                    stopAttack();
-                    addLog("Attack finished (" + duration + "s)", false);
-                }
-            }, duration * 1000);
-        }
+        if (duration > 0) stopTimer = setTimeout(() => { if (attackActive) { stopAttack(); addLog(`Attack finished (${duration}s)`, false); } }, duration * 1000);
     }
 
-    function generateRandomHWID() {
-        return 'HWID-' + Math.random().toString(36).substring(2, 15).toUpperCase();
-    }
-    function generateRandomMAC() {
-        return 'XX:XX:XX:XX:XX:XX'.replace(/XX/g, function() {
-            return Math.floor(Math.random()*256).toString(16).padStart(2,'0').toUpperCase();
-        });
-    }
-    function generateRandomIP() {
-        return Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255);
-    }
-    function generateRandomDevice() {
-        var devices = ['iPhone14,2', 'SM-G998B', 'Pixel 6 Pro', 'Windows PC', 'MacBook Pro M2', 'Linux Ubuntu', 'iPad Pro'];
-        return devices[Math.floor(Math.random() * devices.length)];
-    }
+    document.getElementById('startInject').addEventListener('click', startAttack);
+    document.getElementById('stopInject').addEventListener('click', stopAttack);
 
-    function updateSpoofResult(msg) {
-        var resultDiv = document.getElementById('spoofResult');
-        resultDiv.innerHTML = '[' + new Date().toLocaleTimeString() + '] ' + msg;
-        addLog(msg, false);
-        toast(msg, false);
-    }
+    function randomHWID() { return 'HWID-' + Math.random().toString(36).substring(2, 12).toUpperCase(); }
+    function randomMAC() { return [...Array(6)].map(() => Math.floor(Math.random()*256).toString(16).padStart(2,'0')).join(':').toUpperCase(); }
+    function randomIP() { return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`; }
+    function randomDevice() { return ['iPhone15,2','SM-S918B','Pixel 8 Pro','Windows 11 PC','MacBook Air M2','Linux x86_64'][Math.floor(Math.random()*6)]; }
 
-    document.getElementById('spoofHwidBtn').onclick = function() {
-        var newHwid = generateRandomHWID();
-        updateSpoofResult('[HWID] Spoofed to: ' + newHwid);
-    };
-    document.getElementById('spoofMacBtn').onclick = function() {
-        var newMac = generateRandomMAC();
-        updateSpoofResult('[MAC] Spoofed to: ' + newMac);
-    };
-    document.getElementById('spoofIpBtn').onclick = function() {
-        var newIp = generateRandomIP();
-        updateSpoofResult('[IP] Spoofed to: ' + newIp);
-    };
-    document.getElementById('spoofDeviceBtn').onclick = function() {
-        var newDevice = generateRandomDevice();
-        updateSpoofResult('[DEVICE] Spoofed to: ' + newDevice);
-    };
-    document.getElementById('spoofAllBtn').onclick = function() {
-        var newHwid = generateRandomHWID();
-        var newMac = generateRandomMAC();
-        var newIp = generateRandomIP();
-        var newDevice = generateRandomDevice();
-        updateSpoofResult('[FULL MASK] HWID: ' + newHwid + ' | MAC: ' + newMac + ' | IP: ' + newIp + ' | Device: ' + newDevice);
-    };
+    const spoofOut = document.getElementById('spoofResult');
+    document.getElementById('spoofHwid').onclick = () => { const v = randomHWID(); spoofOut.innerHTML = `[HWID] ${v}`; addLog(`HWID spoofed: ${v}`, false); toast(`HWID: ${v}`, false); };
+    document.getElementById('spoofMac').onclick = () => { const v = randomMAC(); spoofOut.innerHTML = `[MAC] ${v}`; addLog(`MAC spoofed: ${v}`, false); toast(`MAC: ${v}`, false); };
+    document.getElementById('spoofIp').onclick = () => { const v = randomIP(); spoofOut.innerHTML = `[IP] ${v}`; addLog(`IP spoofed: ${v}`, false); toast(`IP: ${v}`, false); };
+    document.getElementById('spoofDevice').onclick = () => { const v = randomDevice(); spoofOut.innerHTML = `[DEVICE] ${v}`; addLog(`Device spoofed: ${v}`, false); toast(`Device: ${v}`, false); };
+    document.getElementById('spoofAll').onclick = () => { const h = randomHWID(), m = randomMAC(), i = randomIP(), d = randomDevice(); spoofOut.innerHTML = `[FULL] HWID: ${h} | MAC: ${m} | IP: ${i} | Device: ${d}`; addLog(`Full spoof: ${h} / ${m} / ${i} / ${d}`, false); toast('Full spoof applied', false); };
 
-    document.getElementById('executeBtn').addEventListener('click', startAttack);
-    document.getElementById('terminateBtn').addEventListener('click', stopAttack);
-    setInterval(function() { if(attackActive) updateUI(); }, 300);
+    setInterval(() => { if (attackActive) updateUI(); }, 300);
 </script>
 </body>
 </html>
