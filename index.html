@@ -2,7 +2,11 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
     <title>SILOS STRIKE | DDoS Panel</title>
     <style>
         * {
@@ -108,7 +112,6 @@
             text-align: center;
         }
 
-        /* panel DDoS - ukryty początkowo */
         .ddos-panel {
             display: none;
         }
@@ -230,7 +233,7 @@
     <div id="loginError" class="error-msg"></div>
 </div>
 
-<!-- PANEL DDoS (ukryty) -->
+<!-- PANEL DDoS -->
 <div id="ddosPanel" class="ddos-panel panel">
     <div class="header">
         <div class="title">SILOS <span>STRIKE</span></div>
@@ -278,7 +281,7 @@
 </div>
 
 <script>
-    // animowane tło - gwiazdy + particle
+    // tło gwiazdy
     const canvas = document.getElementById('starsCanvas');
     const ctx = canvas.getContext('2d');
     let width, height;
@@ -328,7 +331,7 @@
     }
     animateStars();
 
-    // LOGOWANIE
+    // logowanie
     const loginContainer = document.getElementById('loginContainer');
     const ddosPanelDiv = document.getElementById('ddosPanel');
     const loginError = document.getElementById('loginError');
@@ -347,7 +350,7 @@
         }
     });
 
-    // DDoS LOGIC
+    // DDoS engine
     let attackInterval = null;
     let stopTimeout = null;
     let active = false;
