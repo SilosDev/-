@@ -15,92 +15,97 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: crosshair;
+        }
+        html, body {
+            background: #000000;
+            min-height: 100vh;
         }
         body {
-            background: radial-gradient(circle at 30% 10%, #0a0518, #000000);
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: radial-gradient(ellipse at 30% 20%, #0a0520, #000000);
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 24px;
+            padding: 20px;
             position: relative;
             overflow-x: hidden;
         }
-        .bg-grid {
+        .noise-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(rgba(100, 80, 200, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(100, 80, 200, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjciIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMDMiLz48L3N2Zz4=');
+            pointer-events: none;
             z-index: 0;
         }
-        .lottie-center {
+        .lottie-bg {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 400px;
-            height: 400px;
+            width: 500px;
+            height: 500px;
             z-index: 0;
-            opacity: 0.2;
+            opacity: 0.18;
             pointer-events: none;
         }
         .crosshair {
             position: fixed;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border: 2px solid #ff44cc;
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px #ff44cc;
+            box-shadow: 0 0 12px #ff44cc, 0 0 0 1px rgba(0,0,0,0.3);
+            transition: 0.03s linear;
         }
-        .login-box {
+        .login-card {
             position: relative;
-            z-index: 10;
+            z-index: 20;
             width: 380px;
-            background: rgba(8, 5, 20, 0.8);
-            backdrop-filter: blur(20px);
-            border-radius: 48px;
-            border: 1px solid rgba(200, 100, 255, 0.4);
-            padding: 48px 36px;
+            background: rgba(8, 5, 22, 0.85);
+            backdrop-filter: blur(24px);
+            border-radius: 56px;
+            border: 1px solid rgba(200, 80, 255, 0.5);
+            padding: 48px 40px;
             text-align: center;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.6), 0 0 20px rgba(170,68,255,0.2);
         }
-        .login-box h1 {
-            font-size: 40px;
+        .login-card h1 {
+            font-size: 42px;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff, #dd88ff);
+            background: linear-gradient(135deg, #ffffff, #ff88ee, #aa44ff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 12px;
         }
-        .login-box p {
-            color: #aa99dd;
+        .login-card p {
+            color: #bb99ff;
             margin-bottom: 32px;
+            font-size: 13px;
         }
-        .login-box input {
+        .login-card input {
             width: 100%;
             background: rgba(0,0,0,0.6);
-            border: 1px solid #5533aa;
+            border: 1px solid #5a3aaa;
             border-radius: 60px;
             padding: 14px 20px;
             margin-bottom: 16px;
             color: white;
             font-size: 15px;
         }
-        .login-box input:focus {
-            border-color: #ff66ee;
+        .login-card input:focus {
+            border-color: #ff44cc;
             outline: none;
+            box-shadow: 0 0 12px rgba(255,68,204,0.3);
         }
-        .login-box button {
+        .login-card button {
             width: 100%;
             background: linear-gradient(90deg, #aa44ff, #ff44cc);
             border: none;
@@ -109,213 +114,243 @@
             font-weight: bold;
             font-size: 18px;
             color: white;
-            cursor: crosshair;
+            cursor: pointer;
+            transition: 0.1s;
         }
+        .login-card button:active { transform: scale(0.97); }
         .main-panel {
             display: none;
             position: relative;
-            z-index: 10;
-            width: 1200px;
-            max-width: 98%;
-            background: rgba(6, 4, 18, 0.65);
-            backdrop-filter: blur(24px);
-            border-radius: 56px;
-            border: 1px solid rgba(180, 100, 255, 0.35);
+            z-index: 20;
+            width: 1300px;
+            max-width: 96%;
+            background: rgba(6, 3, 18, 0.7);
+            backdrop-filter: blur(28px);
+            border-radius: 60px;
+            border: 1px solid rgba(180, 100, 255, 0.4);
             overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            animation: slideUp 0.5s ease;
         }
-        .header {
-            padding: 28px 36px;
-            border-bottom: 1px solid rgba(200,100,255,0.2);
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .panel-header {
+            padding: 28px 38px;
+            border-bottom: 1px solid rgba(200,100,255,0.25);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .header h2 {
-            font-size: 28px;
+        .panel-header h2 {
+            font-size: 30px;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff, #ff88ee);
+            background: linear-gradient(135deg, #ffffff, #ff88ee, #cc66ff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        .version {
-            background: #2a1a4a;
-            padding: 6px 16px;
-            border-radius: 40px;
+        .version-badge {
+            background: rgba(100, 50, 160, 0.7);
+            padding: 6px 18px;
+            border-radius: 60px;
             font-size: 11px;
-            color: #ffccff;
+            color: #ffddff;
+            border: 1px solid #aa66ff;
         }
-        .tabs {
+        .tabs-row {
             display: flex;
-            gap: 10px;
-            padding: 0 36px;
-            margin-top: 20px;
+            gap: 12px;
+            padding: 22px 38px 0 38px;
             flex-wrap: wrap;
         }
         .tab {
-            background: rgba(30, 20, 50, 0.6);
-            padding: 10px 26px;
-            border-radius: 40px;
+            background: rgba(25, 15, 55, 0.7);
+            padding: 10px 28px;
+            border-radius: 60px;
             color: #ccaaee;
-            cursor: crosshair;
+            cursor: pointer;
             font-weight: 600;
             transition: 0.2s;
+            font-size: 14px;
         }
         .tab.active {
             background: linear-gradient(120deg, #aa44ff, #ff44cc);
             color: white;
-            box-shadow: 0 0 12px rgba(170,68,255,0.5);
+            box-shadow: 0 0 18px rgba(170,68,255,0.6);
         }
         .pane {
             display: none;
-            padding: 32px 36px;
-            animation: fadeIn 0.25s ease;
+            padding: 32px 38px 38px 38px;
+            animation: fadePane 0.3s;
         }
         .pane.active { display: block; }
-        @keyframes fadeIn {
+        @keyframes fadePane {
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .stats {
+        .stats-grid {
             display: flex;
             gap: 24px;
             margin-bottom: 32px;
         }
-        .stat-card {
-            background: rgba(0,0,0,0.45);
-            border-radius: 32px;
-            padding: 24px;
+        .stat-item {
+            background: rgba(0,0,0,0.5);
+            border-radius: 40px;
+            padding: 26px 20px;
             flex: 1;
             text-align: center;
-            border: 1px solid rgba(200,100,255,0.2);
+            border: 1px solid rgba(200,100,255,0.3);
+            transition: 0.2s;
+        }
+        .stat-item:hover {
+            border-color: #ff66ee;
+            transform: translateY(-2px);
         }
         .stat-number {
-            font-size: 44px;
+            font-size: 46px;
             font-weight: 800;
-            color: #ffccff;
+            color: #ffddff;
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #bbaaee;
+            color: #c5b0ff;
             font-size: 12px;
+            font-weight: 500;
         }
         input, select {
             width: 100%;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid #5533aa;
-            border-radius: 32px;
-            padding: 12px 18px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #5a3aaa;
+            border-radius: 36px;
+            padding: 12px 20px;
             color: white;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            border-color: #ff44cc;
+            outline: none;
         }
         .row-2, .row-3, .row-4 {
             display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 18px;
+            margin-bottom: 22px;
         }
         .row-2 > *, .row-3 > *, .row-4 > * { flex: 1; }
         button {
             border: none;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: crosshair;
+            padding: 12px 26px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.1s;
         }
+        button:active { transform: scale(0.97); }
         .btn-primary {
             background: linear-gradient(90deg, #aa44ff, #ff44cc);
             color: white;
         }
         .btn-danger {
-            background: #882244;
+            background: #a02255;
             color: white;
+            border: 1px solid #ff66aa;
         }
         .btn-spoof {
             background: linear-gradient(90deg, #44aaff, #44ffcc);
             color: black;
         }
-        .logs-box {
-            background: rgba(0,0,0,0.6);
-            border-radius: 32px;
-            padding: 20px;
-            height: 280px;
+        .logs-window {
+            background: rgba(0,0,0,0.7);
+            border-radius: 40px;
+            padding: 22px;
+            height: 290px;
             overflow-y: auto;
-            font-family: monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             color: #aaffdd;
+            border: 1px solid rgba(100,200,255,0.2);
         }
         .toast {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: #1a0f2a;
-            backdrop-filter: blur(16px);
-            border-left: 4px solid #ff44cc;
-            padding: 12px 24px;
+            background: #1a0f2e;
+            backdrop-filter: blur(24px);
+            border-left: 5px solid #ff44cc;
+            padding: 14px 28px;
             border-radius: 60px;
-            color: white;
-            z-index: 1000;
-            transform: translateX(450px);
-            transition: 0.3s;
+            color: #f0eaff;
+            font-size: 13px;
+            z-index: 9999;
+            transform: translateX(500px);
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 6px 20px black;
         }
         .toast.show { transform: translateX(0); }
-        .result-box {
-            background: #0a0520;
-            border-radius: 28px;
-            padding: 16px;
-            margin-top: 20px;
+        .spoof-result {
+            background: #0a0522;
+            border-radius: 32px;
+            padding: 18px;
+            margin-top: 24px;
             font-family: monospace;
             font-size: 12px;
-            color: #44ffaa;
+            color: #55ffaa;
+            border: 1px solid #44ffaa33;
         }
-        .validation-badge {
-            background: #1a0f2a;
-            border-radius: 20px;
-            padding: 4px 12px;
+        .valid-badge {
+            background: #110a22;
+            border-radius: 30px;
+            padding: 6px 14px;
             font-size: 11px;
             display: inline-block;
             margin-top: 8px;
         }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #1a1030; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #cc66ff; border-radius: 10px; }
     </style>
 </head>
 <body>
-<div class="bg-grid"></div>
-<div class="lottie-center" id="lottieMain"></div>
-<div class="crosshair" id="crosshairDot"></div>
+<div class="noise-bg"></div>
+<div class="lottie-bg" id="lottieMain"></div>
+<div class="crosshair" id="crosshairEl"></div>
 
-<div id="loginScreen" class="login-box">
+<div id="loginScreen" class="login-card">
     <h1>SILK BY ??</h1>
-    <p>next generation panel</p>
+    <p>next generation security panel</p>
     <input type="text" id="loginUser" placeholder="username">
     <input type="password" id="loginPass" placeholder="password">
     <button id="loginBtn">Access</button>
-    <div id="loginMsg" style="color:#ff6688; margin-top:16px;"></div>
+    <div id="loginMsg" style="color:#ff8888; margin-top:16px;"></div>
 </div>
 
 <div id="appScreen" class="main-panel">
-    <div class="header">
+    <div class="panel-header">
         <h2>SILK <span style="color:#ff66ee">BY ??</span></h2>
-        <div class="version">v13.0</div>
+        <div class="version-badge">v14.0 // NEO</div>
     </div>
-    <div class="tabs">
-        <div class="tab active" data-tab="dash">Dashboard</div>
+    <div class="tabs-row">
+        <div class="tab active" data-tab="dashboard">Dashboard</div>
         <div class="tab" data-tab="ddos">DDoS Inject</div>
         <div class="tab" data-tab="spoofer">Vinted Spoofer</div>
         <div class="tab" data-tab="logs">Logs</div>
     </div>
 
-    <div id="dash" class="pane active">
-        <div class="stats">
-            <div class="stat-card"><div class="stat-number" id="dashPackets">0</div><div>Packets</div></div>
-            <div class="stat-card"><div class="stat-number" id="dashStatus">Idle</div><div>Status</div></div>
-            <div class="stat-card"><div class="stat-number" id="dashPps">0</div><div>PPS</div></div>
+    <div id="dashboard" class="pane active">
+        <div class="stats-grid">
+            <div class="stat-item"><div class="stat-number" id="statPackets">0</div><div>Packets</div></div>
+            <div class="stat-item"><div class="stat-number" id="statStatus">Idle</div><div>Status</div></div>
+            <div class="stat-item"><div class="stat-number" id="statPps">0</div><div>PPS</div></div>
         </div>
-        <div class="stat-card" style="text-align:left;">
-            <div style="color:#ccb5ff; margin-bottom:8px;">Current Target</div>
-            <div id="dashTarget" style="font-size:18px;">—</div>
-            <div id="dashValid" class="validation-badge"></div>
+        <div class="stat-item" style="text-align:left;">
+            <div style="color:#ddccff; margin-bottom:8px;">Current Target</div>
+            <div id="dashTarget" style="font-size:20px; font-weight:500;">—</div>
+            <div id="dashValidBadge" class="valid-badge"></div>
         </div>
     </div>
 
@@ -335,27 +370,27 @@
             <div class="form-group"><label>Duration (sec)</label><input type="number" id="ddosDuration" value="30"></div>
             <div class="form-group"><label>Random Payload</label><select id="ddosRandom"><option>OFF</option><option>ON</option></select></div>
         </div>
-        <div id="targetValidMsg" class="validation-badge" style="margin-bottom:16px;"></div>
-        <div style="display:flex; gap:16px;">
-            <button class="btn-primary" id="injectBtn">Inject Process</button>
-            <button class="btn-danger" id="stopBtn">Terminate</button>
+        <div id="targetValidMsg" class="valid-badge" style="margin-bottom:18px;"></div>
+        <div style="display:flex; gap:18px;">
+            <button class="btn-primary" id="startInject">Inject Process</button>
+            <button class="btn-danger" id="stopInject">Terminate</button>
         </div>
     </div>
 
     <div id="spoofer" class="pane">
         <div class="row-4">
-            <button class="btn-spoof" id="spoofHwid">HWID Spoof</button>
-            <button class="btn-spoof" id="spoofMac">MAC Spoof</button>
-            <button class="btn-spoof" id="spoofIp">IP Spoof</button>
-            <button class="btn-spoof" id="spoofDevice">Device Spoof</button>
+            <button class="btn-spoof" id="spoofHwidBtn">HWID Spoof</button>
+            <button class="btn-spoof" id="spoofMacBtn">MAC Spoof</button>
+            <button class="btn-spoof" id="spoofIpBtn">IP Spoof</button>
+            <button class="btn-spoof" id="spoofDeviceBtn">Device Spoof</button>
         </div>
-        <button class="btn-primary" id="spoofFull" style="width:100%; margin-top:8px;">Full Mask Spoof</button>
-        <div id="spoofResult" class="result-box">[ready]</div>
+        <button class="btn-primary" id="spoofFullBtn" style="width:100%; margin-top:10px;">Full Mask Spoof</button>
+        <div id="spoofResultBox" class="spoof-result">[ready]</div>
     </div>
 
     <div id="logs" class="pane">
-        <div class="logs-box" id="logsContainer">
-            <div>[system] SILK BY ?? v13.0 online</div>
+        <div class="logs-window" id="logsContainer">
+            <div>[system] SILK BY ?? v14.0 neo online</div>
         </div>
     </div>
 </div>
@@ -363,21 +398,26 @@
 <div id="toastMsg" class="toast">ready</div>
 
 <script>
-    const lottieContainer = document.getElementById('lottieMain');
-    if (lottieContainer) {
+    const lottieBg = document.getElementById('lottieMain');
+    if (lottieBg) {
         const lottieEl = document.createElement('dotlottie-wc');
         lottieEl.setAttribute('src', 'https://lottie.host/33ee256d-6df6-4829-9568-ff066f9c3de5/MsowL0wALe.lottie');
         lottieEl.style.width = '100%';
         lottieEl.style.height = '100%';
         lottieEl.setAttribute('autoplay', '');
         lottieEl.setAttribute('loop', '');
-        lottieContainer.appendChild(lottieEl);
+        lottieBg.appendChild(lottieEl);
     }
 
-    const crosshair = document.getElementById('crosshairDot');
+    const crosshair = document.getElementById('crosshairEl');
     document.addEventListener('mousemove', (e) => {
         crosshair.style.left = e.clientX + 'px';
         crosshair.style.top = e.clientY + 'px';
+    });
+    document.addEventListener('touchmove', (e) => {
+        const touch = e.touches[0];
+        crosshair.style.left = touch.clientX + 'px';
+        crosshair.style.top = touch.clientY + 'px';
     });
 
     function toast(msg, isErr) {
@@ -385,7 +425,7 @@
         t.textContent = msg;
         t.style.borderLeftColor = isErr ? '#ff667a' : '#ff44cc';
         t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2500);
+        setTimeout(() => t.classList.remove('show'), 2600);
     }
 
     document.getElementById('loginBtn').onclick = () => {
@@ -413,19 +453,10 @@
         });
     });
 
-    const blocked = ['youtube.com', 'youtu.be', 'facebook.com', 'instagram.com', 'tiktok.com', 'twitter.com', 'x.com', 'discord.com', 'google.com', 'twitch.tv', 'reddit.com', 'snapchat.com', 'telegram.org', 'whatsapp.com'];
-    
-    function isValidIp(ip) {
-        const parts = ip.split('.');
-        if (parts.length !== 4) return false;
-        return parts.every(p => { const n = parseInt(p); return !isNaN(n) && n >= 0 && n <= 255; });
-    }
-    function isValidDomain(domain) {
-        return /^[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain);
-    }
-    function isBlocked(target) {
-        return blocked.some(b => target.toLowerCase().includes(b));
-    }
+    const blockedList = ['youtube.com', 'youtu.be', 'facebook.com', 'instagram.com', 'tiktok.com', 'twitter.com', 'x.com', 'discord.com', 'google.com', 'twitch.tv', 'reddit.com', 'snapchat.com', 'telegram.org', 'whatsapp.com'];
+    function isValidIp(ip) { const parts = ip.split('.'); if (parts.length !== 4) return false; return parts.every(p => { const n = parseInt(p); return !isNaN(n) && n >= 0 && n <= 255; }); }
+    function isValidDomain(domain) { return /^[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(domain); }
+    function isBlocked(target) { return blockedList.some(b => target.toLowerCase().includes(b)); }
     function validateTarget(target) {
         if (!target) return { valid: false, reason: 'Empty target' };
         if (isBlocked(target)) return { valid: false, reason: 'Social media blocked' };
@@ -435,23 +466,22 @@
     }
 
     const targetInput = document.getElementById('ddosTarget');
-    const validMsg = document.getElementById('targetValidMsg');
-    const dashValid = document.getElementById('dashValid');
-
+    const validMsgDiv = document.getElementById('targetValidMsg');
+    const dashValidDiv = document.getElementById('dashValidBadge');
     function updateValidation() {
         const val = targetInput.value.trim();
-        if (!val) { validMsg.innerHTML = ''; dashValid.innerHTML = ''; return; }
+        if (!val) { validMsgDiv.innerHTML = ''; dashValidDiv.innerHTML = ''; return; }
         const res = validateTarget(val);
         if (res.valid) {
-            validMsg.innerHTML = '✓ ' + res.reason;
-            validMsg.style.color = '#88ff88';
-            dashValid.innerHTML = 'Target valid';
-            dashValid.style.color = '#88ff88';
+            validMsgDiv.innerHTML = '✓ ' + res.reason;
+            validMsgDiv.style.color = '#88ff88';
+            dashValidDiv.innerHTML = '✓ Target valid';
+            dashValidDiv.style.color = '#88ff88';
         } else {
-            validMsg.innerHTML = '✗ ' + res.reason;
-            validMsg.style.color = '#ff8888';
-            dashValid.innerHTML = 'Invalid target';
-            dashValid.style.color = '#ff8888';
+            validMsgDiv.innerHTML = '✗ ' + res.reason;
+            validMsgDiv.style.color = '#ff8888';
+            dashValidDiv.innerHTML = '✗ Invalid target';
+            dashValidDiv.style.color = '#ff8888';
         }
     }
     targetInput.addEventListener('input', updateValidation);
@@ -459,9 +489,9 @@
     let attackActive = false, attackInterval = null, stopTimer = null;
     let packetTotal = 0, currentPps = 0, currentTarget = '', currentMethod = '';
     const logsDiv = document.getElementById('logsContainer');
-    const dashPackets = document.getElementById('dashPackets');
-    const dashStatus = document.getElementById('dashStatus');
-    const dashPps = document.getElementById('dashPps');
+    const statPacketsSpan = document.getElementById('statPackets');
+    const statStatusSpan = document.getElementById('statStatus');
+    const statPpsSpan = document.getElementById('statPps');
     const dashTargetSpan = document.getElementById('dashTarget');
 
     function addLog(msg, isErr) {
@@ -471,13 +501,13 @@
         if (isErr) line.style.color = '#ffa5bb';
         logsDiv.appendChild(line);
         line.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        if (!isErr) toast(msg.slice(0, 50), false);
+        if (!isErr) toast(msg.slice(0, 55), false);
     }
 
     function updateUI() {
-        dashPackets.innerText = packetTotal;
-        dashStatus.innerText = attackActive ? 'ATTACKING' : 'IDLE';
-        dashPps.innerText = currentPps;
+        statPacketsSpan.innerText = packetTotal;
+        statStatusSpan.innerText = attackActive ? 'ATTACKING' : 'IDLE';
+        statPpsSpan.innerText = currentPps;
         dashTargetSpan.innerText = currentTarget || '—';
     }
 
@@ -501,7 +531,7 @@
         const method = document.getElementById('ddosMethod').value;
         const port = parseInt(document.getElementById('ddosPort').value) || 80;
         let threads = parseInt(document.getElementById('ddosThreads').value) || 50;
-        threads = Math.min(threads, 30);
+        threads = Math.min(threads, 32);
         const size = parseInt(document.getElementById('ddosSize').value) || 512;
         const delay = parseInt(document.getElementById('ddosDelay').value) || 0;
         const spoof = document.getElementById('ddosSpoof').value === 'ON';
@@ -534,20 +564,20 @@
         if (duration > 0) stopTimer = setTimeout(() => { if (attackActive) { stopAttack(); addLog(`Attack finished (${duration}s)`, false); } }, duration * 1000);
     }
 
-    document.getElementById('injectBtn').addEventListener('click', startAttack);
-    document.getElementById('stopBtn').addEventListener('click', stopAttack);
+    document.getElementById('startInject').addEventListener('click', startAttack);
+    document.getElementById('stopInject').addEventListener('click', stopAttack);
 
     function randHWID() { return 'HWID-' + Math.random().toString(36).substring(2, 12).toUpperCase(); }
     function randMAC() { return [...Array(6)].map(() => Math.floor(Math.random()*256).toString(16).padStart(2,'0')).join(':').toUpperCase(); }
     function randIP() { return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`; }
     function randDevice() { return ['iPhone15,2','SM-S918B','Pixel 8 Pro','Windows 11','MacBook M2','Linux x86_64'][Math.floor(Math.random()*6)]; }
 
-    const spoofOut = document.getElementById('spoofResult');
-    document.getElementById('spoofHwid').onclick = () => { const v = randHWID(); spoofOut.innerHTML = `[HWID] ${v}`; addLog(`HWID spoofed: ${v}`, false); toast(`HWID: ${v}`, false); };
-    document.getElementById('spoofMac').onclick = () => { const v = randMAC(); spoofOut.innerHTML = `[MAC] ${v}`; addLog(`MAC spoofed: ${v}`, false); toast(`MAC: ${v}`, false); };
-    document.getElementById('spoofIp').onclick = () => { const v = randIP(); spoofOut.innerHTML = `[IP] ${v}`; addLog(`IP spoofed: ${v}`, false); toast(`IP: ${v}`, false); };
-    document.getElementById('spoofDevice').onclick = () => { const v = randDevice(); spoofOut.innerHTML = `[DEVICE] ${v}`; addLog(`Device spoofed: ${v}`, false); toast(`Device: ${v}`, false); };
-    document.getElementById('spoofFull').onclick = () => { const h = randHWID(), m = randMAC(), i = randIP(), d = randDevice(); spoofOut.innerHTML = `[FULL] HWID: ${h} | MAC: ${m} | IP: ${i} | Device: ${d}`; addLog(`Full spoof: ${h} / ${m} / ${i} / ${d}`, false); toast('Full spoof applied', false); };
+    const spoofResultDiv = document.getElementById('spoofResultBox');
+    document.getElementById('spoofHwidBtn').onclick = () => { const v = randHWID(); spoofResultDiv.innerHTML = `[HWID] ${v}`; addLog(`HWID spoofed: ${v}`, false); toast(`HWID: ${v}`, false); };
+    document.getElementById('spoofMacBtn').onclick = () => { const v = randMAC(); spoofResultDiv.innerHTML = `[MAC] ${v}`; addLog(`MAC spoofed: ${v}`, false); toast(`MAC: ${v}`, false); };
+    document.getElementById('spoofIpBtn').onclick = () => { const v = randIP(); spoofResultDiv.innerHTML = `[IP] ${v}`; addLog(`IP spoofed: ${v}`, false); toast(`IP: ${v}`, false); };
+    document.getElementById('spoofDeviceBtn').onclick = () => { const v = randDevice(); spoofResultDiv.innerHTML = `[DEVICE] ${v}`; addLog(`Device spoofed: ${v}`, false); toast(`Device: ${v}`, false); };
+    document.getElementById('spoofFullBtn').onclick = () => { const h = randHWID(), m = randMAC(), i = randIP(), d = randDevice(); spoofResultDiv.innerHTML = `[FULL] HWID: ${h} | MAC: ${m} | IP: ${i} | Device: ${d}`; addLog(`Full spoof: ${h} / ${m} / ${i} / ${d}`, false); toast('Full spoof applied', false); };
 
     setInterval(() => { if (attackActive) updateUI(); }, 300);
     updateValidation();
