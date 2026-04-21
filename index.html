@@ -46,7 +46,7 @@
             width: 150px;
             height: 150px;
             z-index: 1;
-            opacity: 0.5;
+            opacity: 0.6;
             pointer-events: none;
         }
         .lottie-bg {
@@ -55,7 +55,7 @@
             right: 10px;
             width: 100px;
             height: 100px;
-            opacity: 0.2;
+            opacity: 0.25;
             pointer-events: none;
             z-index: 0;
         }
@@ -148,7 +148,7 @@
             display: none;
             position: relative;
             z-index: 10;
-            width: 960px;
+            width: 1100px;
             max-width: 95%;
             background: rgba(8, 4, 20, 0.65);
             backdrop-filter: blur(28px);
@@ -189,6 +189,7 @@
             display: flex;
             gap: 12px;
             padding: 22px 36px 0 36px;
+            flex-wrap: wrap;
         }
         .tab-btn {
             background: rgba(30, 15, 55, 0.6);
@@ -266,6 +267,7 @@
         }
         .double { display: flex; gap: 16px; }
         .triple { display: flex; gap: 16px; }
+        .quad { display: flex; gap: 16px; }
         .btn {
             border: none;
             padding: 12px 24px;
@@ -278,6 +280,7 @@
         .btn:active { transform: scale(0.97); }
         .btn-exec { background: linear-gradient(90deg, #aa44ff, #ff44cc); color: white; }
         .btn-stop { background: #882244; color: #ffbbdd; border: 1px solid #ff66aa; }
+        .btn-spoof { background: linear-gradient(90deg, #44aaff, #44ffcc); color: black; }
         .logs-window {
             position: relative;
             background: rgba(0, 0, 0, 0.7);
@@ -311,6 +314,16 @@
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #1a1030; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #cc66ff; border-radius: 10px; }
+        .spoof-result {
+            background: #1a0a2a;
+            border-radius: 28px;
+            padding: 16px;
+            margin-top: 16px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #00ffaa;
+            border: 1px solid #44ffaa33;
+        }
     </style>
 </head>
 <body>
@@ -331,11 +344,12 @@
 <div id="appPanel" class="main-panel">
     <div class="panel-header">
         <h2>SILK <span style="color:#ff66ee">BY ??</span></h2>
-        <div class="version-tag">v9.0 // CORE</div>
+        <div class="version-tag">v10.0 // DUAL CORE</div>
     </div>
     <div class="tabs-row">
         <button class="tab-btn active" data-tab="tabDash">Dashboard</button>
-        <button class="tab-btn" data-tab="tabAttack">Execute</button>
+        <button class="tab-btn" data-tab="tabAttack">DDoS Inject</button>
+        <button class="tab-btn" data-tab="tabSpoofer">Vinted Spoofer</button>
         <button class="tab-btn" data-tab="tabLogs">Logs</button>
     </div>
 
@@ -366,32 +380,61 @@
                         <option value="UDP FLOOD">UDP Flood (L4)</option>
                         <option value="SYN FLOOD">SYN Flood + Spoof</option>
                         <option value="ICMP STORM">ICMP Storm</option>
+                        <option value="TCP RST">TCP RST Flood</option>
+                        <option value="GRE IP">GRE IP Flood</option>
                     </select>
                 </div>
                 <div style="flex:1">
                     <label style="display:block; margin-bottom:8px; color:#bbaaee;">Port</label>
                     <input type="number" id="attackPort" value="80" min="1" max="65535">
                 </div>
+                <div style="flex:1">
+                    <label style="display:block; margin-bottom:8px; color:#bbaaee;">Packet Size (bytes)</label>
+                    <input type="number" id="attackPacketSize" value="512" min="64" max="65507">
+                </div>
             </div>
-            <div class="double" style="margin-top: 16px;">
+            <div class="quad" style="margin-top: 16px;">
                 <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">Threads</label><input type="number" id="attackThreads" value="75" min="1"></div>
+                <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">Delay (ms)</label><input type="number" id="attackDelay" value="0" min="0" max="1000"></div>
                 <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">Spoof IP</label><select id="attackSpoof"><option value="true">ON</option><option value="false">OFF</option></select></div>
+                <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">Random Payload</label><select id="attackRandom"><option value="true">ON</option><option value="false">OFF</option></select></div>
             </div>
             <div style="margin: 20px 0;">
                 <label style="display:block; margin-bottom:8px; color:#bbaaee;">Duration (seconds, 0 = infinite)</label>
                 <input type="number" id="attackDuration" value="35" min="0">
             </div>
             <div style="display: flex; gap: 16px; margin-top: 10px;">
-                <button class="btn btn-exec" id="executeBtn">Execute Attack</button>
+                <button class="btn btn-exec" id="executeBtn">Inject Process</button>
                 <button class="btn btn-stop" id="terminateBtn">Terminate</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tabSpoofer" class="tab-pane">
+        <div class="glass-card">
+            <div style="margin-bottom: 20px;">
+                <label style="display:block; margin-bottom:8px; color:#bbaaee;">Vinted Account HWID Spoofer</label>
+                <p style="color:#aa99dd; font-size:12px; margin-bottom:16px;">Generate fake hardware identity for Vinted bypass</p>
+            </div>
+            <div class="quad">
+                <div style="flex:1"><button class="btn btn-spoof" id="spoofHwidBtn" style="width:100%">Spoof HWID</button></div>
+                <div style="flex:1"><button class="btn btn-spoof" id="spoofMacBtn" style="width:100%">Spoof MAC</button></div>
+                <div style="flex:1"><button class="btn btn-spoof" id="spoofIpBtn" style="width:100%">Spoof IP</button></div>
+                <div style="flex:1"><button class="btn btn-spoof" id="spoofDeviceBtn" style="width:100%">Spoof Device</button></div>
+            </div>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-exec" id="spoofAllBtn" style="width:100%">Spoof All (Full Mask)</button>
+            </div>
+            <div id="spoofResult" class="spoof-result">
+                [ready] Click any spoof button
             </div>
         </div>
     </div>
 
     <div id="tabLogs" class="tab-pane">
         <div class="logs-window" id="logsContainer">
-            <div>[system] SILK BY ?? online</div>
-            <div>[system] ready</div>
+            <div>[system] SILK BY ?? v10.0 online</div>
+            <div>[system] dual core ready</div>
             <div class="lottie-bg" id="bgLottie"></div>
         </div>
     </div>
@@ -413,7 +456,7 @@
         lottie.setAttribute('autoplay', '');
         lottie.setAttribute('loop', 'false');
         container.appendChild(lottie);
-        lottie.addEventListener('complete', () => {
+        lottie.addEventListener('complete', function() {
             container.innerHTML = '';
         });
     }
@@ -422,7 +465,7 @@
         if (!lottieActive) {
             lottieActive = true;
             createLottieInContainer(lottieContainer, 'https://lottie.host/33ee256d-6df6-4829-9568-ff066f9c3de5/MsowL0wALe.lottie', '150px');
-            setTimeout(() => { lottieActive = false; }, 2000);
+            setTimeout(function() { lottieActive = false; }, 2000);
         }
     }
     
@@ -442,6 +485,7 @@
     }
     
     setInterval(playAnimationOnce, 12000);
+    playAnimationOnce();
     
     const canvas = document.getElementById('particleCanvas');
     const ctx = canvas.getContext('2d');
@@ -608,15 +652,21 @@
         var method = document.getElementById('attackMethod').value;
         var port = parseInt(document.getElementById('attackPort').value);
         if (isNaN(port) || port < 1 || port > 65535) port = 80;
+        var packetSize = parseInt(document.getElementById('attackPacketSize').value);
+        if (isNaN(packetSize) || packetSize < 64) packetSize = 512;
+        if (packetSize > 65507) packetSize = 65507;
         var threads = parseInt(document.getElementById('attackThreads').value);
         if (isNaN(threads) || threads < 1) threads = 50;
+        var delay = parseInt(document.getElementById('attackDelay').value);
+        if (isNaN(delay)) delay = 0;
         var spoof = document.getElementById('attackSpoof').value === "true";
+        var randomPayload = document.getElementById('attackRandom').value === "true";
         var duration = parseInt(document.getElementById('attackDuration').value);
         if (isNaN(duration)) duration = 30;
 
         currentTargetText = target + ":" + port;
         currentMethodText = method;
-        addLog("[INIT] Target: " + target + ":" + port + " | " + method + " | Threads:" + threads + " | Spoof:" + (spoof ? "ON" : "OFF") + " | Duration:" + duration + "s", false);
+        addLog("[INJECT] Target: " + target + ":" + port + " | " + method + " | Size:" + packetSize + " | Threads:" + threads + " | Delay:" + delay + "ms | Spoof:" + (spoof ? "ON" : "OFF") + " | Random:" + (randomPayload ? "ON" : "OFF") + " | Duration:" + duration + "s", false);
         attackActive = true;
         packetTotal = 0;
         updateUI();
@@ -631,14 +681,20 @@
                 if (spoof) {
                     spoofPart = " (spoof: " + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + ")";
                 }
-                if (method === "HTTP FLOOD") addLog("[HTTP] GET /" + Math.random().toString(36).substring(5) + " -> " + target + ":" + port + spoofPart, false);
-                else if (method === "UDP FLOOD") addLog("[UDP] " + target + ":" + port + " | len " + (Math.floor(Math.random()*900)+100) + spoofPart, false);
+                var payload = "";
+                if (randomPayload) {
+                    payload = " | payload:" + Math.random().toString(36).substring(2, 10);
+                }
+                if (method === "HTTP FLOOD") addLog("[HTTP] GET /" + Math.random().toString(36).substring(5) + " -> " + target + ":" + port + spoofPart + payload, false);
+                else if (method === "UDP FLOOD") addLog("[UDP] " + target + ":" + port + " | size:" + packetSize + spoofPart + payload, false);
                 else if (method === "SYN FLOOD") addLog("[SYN] seq=" + Math.floor(Math.random()*9999999) + " window=65535 -> " + target + ":" + port + spoofPart, false);
-                else addLog("[ICMP] echo request id=" + Math.floor(Math.random()*65535) + " -> " + target + spoofPart, false);
+                else if (method === "ICMP STORM") addLog("[ICMP] echo request id=" + Math.floor(Math.random()*65535) + " -> " + target + spoofPart, false);
+                else if (method === "TCP RST") addLog("[TCP RST] flag=RST -> " + target + ":" + port + spoofPart, false);
+                else addLog("[GRE] encapsulated -> " + target + spoofPart, false);
             }
-            currentPps = Math.floor(batch * 4.2);
+            currentPps = Math.floor(batch * (1000 / (200 + delay)));
             updateUI();
-        }, 200);
+        }, 200 + delay);
 
         if (duration > 0) {
             stopTimer = setTimeout(function() {
@@ -649,6 +705,53 @@
             }, duration * 1000);
         }
     }
+
+    function generateRandomHWID() {
+        return 'HWID-' + Math.random().toString(36).substring(2, 15).toUpperCase();
+    }
+    function generateRandomMAC() {
+        return 'XX:XX:XX:XX:XX:XX'.replace(/XX/g, function() {
+            return Math.floor(Math.random()*256).toString(16).padStart(2,'0').toUpperCase();
+        });
+    }
+    function generateRandomIP() {
+        return Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255);
+    }
+    function generateRandomDevice() {
+        var devices = ['iPhone14,2', 'SM-G998B', 'Pixel 6 Pro', 'Windows PC', 'MacBook Pro M2', 'Linux Ubuntu', 'iPad Pro'];
+        return devices[Math.floor(Math.random() * devices.length)];
+    }
+
+    function updateSpoofResult(msg) {
+        var resultDiv = document.getElementById('spoofResult');
+        resultDiv.innerHTML = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+        addLog(msg, false);
+        toast(msg, false);
+    }
+
+    document.getElementById('spoofHwidBtn').onclick = function() {
+        var newHwid = generateRandomHWID();
+        updateSpoofResult('[HWID] Spoofed to: ' + newHwid);
+    };
+    document.getElementById('spoofMacBtn').onclick = function() {
+        var newMac = generateRandomMAC();
+        updateSpoofResult('[MAC] Spoofed to: ' + newMac);
+    };
+    document.getElementById('spoofIpBtn').onclick = function() {
+        var newIp = generateRandomIP();
+        updateSpoofResult('[IP] Spoofed to: ' + newIp);
+    };
+    document.getElementById('spoofDeviceBtn').onclick = function() {
+        var newDevice = generateRandomDevice();
+        updateSpoofResult('[DEVICE] Spoofed to: ' + newDevice);
+    };
+    document.getElementById('spoofAllBtn').onclick = function() {
+        var newHwid = generateRandomHWID();
+        var newMac = generateRandomMAC();
+        var newIp = generateRandomIP();
+        var newDevice = generateRandomDevice();
+        updateSpoofResult('[FULL MASK] HWID: ' + newHwid + ' | MAC: ' + newMac + ' | IP: ' + newIp + ' | Device: ' + newDevice);
+    };
 
     document.getElementById('executeBtn').addEventListener('click', startAttack);
     document.getElementById('terminateBtn').addEventListener('click', stopAttack);
