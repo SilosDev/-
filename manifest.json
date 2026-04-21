@@ -1,12 +1,12 @@
 {
-  "name": "SILOS| DDoS Panel",
-  "short_name": "app",
+  "name": "Silk",
+  "short_name": "Silos",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
-  "description": "Account restriction bypass tool",
+  "description": "DDoS Panel NextGen",
   "icons": [
     {
       "src": "icon.png",
