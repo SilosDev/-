@@ -26,7 +26,6 @@
             position: relative;
         }
 
-        /* tło animowane */
         .orb {
             position: fixed;
             width: 70vw;
@@ -38,12 +37,12 @@
             z-index: 0;
             animation: floatGlow 16s infinite alternate;
         }
+
         @keyframes floatGlow {
             0% { transform: translate(0,0) scale(1); opacity: 0.4; }
             100% { transform: translate(-80px, 100px) scale(1.3); opacity: 0.7; }
         }
 
-        /* login */
         .login-card {
             position: relative;
             z-index: 10;
@@ -56,6 +55,7 @@
             box-shadow: 0 30px 50px rgba(0,0,0,0.5);
             transition: 0.2s;
         }
+
         .login-card h1 {
             font-size: 38px;
             font-weight: 800;
@@ -65,11 +65,13 @@
             color: transparent;
             margin-bottom: 8px;
         }
+
         .login-card p {
             color: #9a8ec2;
             margin-bottom: 32px;
             font-size: 14px;
         }
+
         .login-card input {
             width: 100%;
             background: #0d0b1a;
@@ -81,6 +83,7 @@
             font-size: 15px;
             outline: none;
         }
+
         .login-card button {
             width: 100%;
             background: linear-gradient(90deg, #884dff, #c46eff);
@@ -92,6 +95,7 @@
             color: white;
             cursor: pointer;
         }
+
         .error {
             color: #ff8a9f;
             text-align: center;
@@ -99,7 +103,6 @@
             font-size: 13px;
         }
 
-        /* główny panel */
         .main-panel {
             display: none;
             position: relative;
@@ -114,6 +117,7 @@
             box-shadow: 0 25px 45px black;
             animation: slideUp 0.5s ease;
         }
+
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
@@ -125,6 +129,7 @@
             justify-content: space-between;
             align-items: baseline;
         }
+
         .panel-header h2 {
             font-size: 28px;
             font-weight: 800;
@@ -133,6 +138,7 @@
             background-clip: text;
             color: transparent;
         }
+
         .version-tag {
             background: #2a1f4a;
             padding: 6px 16px;
@@ -141,12 +147,12 @@
             color: #dbbaff;
         }
 
-        /* zakładki */
         .tabs-row {
             display: flex;
             gap: 12px;
             padding: 24px 32px 0 32px;
         }
+
         .tab-btn {
             background: rgba(30, 22, 55, 0.6);
             border: none;
@@ -158,6 +164,7 @@
             transition: 0.2s;
             font-size: 14px;
         }
+
         .tab-btn.active {
             background: #7b40e0;
             color: white;
@@ -169,15 +176,16 @@
             padding: 28px 32px 36px 32px;
             animation: fadePane 0.25s ease;
         }
+
         .tab-pane.active {
             display: block;
         }
+
         @keyframes fadePane {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* karty i style */
         .glass-card {
             background: rgba(0, 0, 0, 0.45);
             border-radius: 40px;
@@ -185,11 +193,13 @@
             margin-bottom: 24px;
             border: 1px solid rgba(255,255,255,0.05);
         }
+
         .stats-row {
             display: flex;
             gap: 18px;
             margin-bottom: 20px;
         }
+
         .stat-box {
             background: #0a071a;
             border-radius: 32px;
@@ -197,17 +207,20 @@
             flex: 1;
             text-align: center;
         }
+
         .stat-number {
             font-size: 36px;
             font-weight: 800;
             color: #e2b6ff;
         }
+
         .label {
             font-size: 11px;
             text-transform: uppercase;
             color: #aaa;
             margin-top: 6px;
         }
+
         input, select {
             background: #0c0820;
             border: 1px solid #37305a;
@@ -218,10 +231,12 @@
             font-size: 14px;
             outline: none;
         }
+
         .double {
             display: flex;
             gap: 16px;
         }
+
         .btn {
             border: none;
             padding: 12px 24px;
@@ -230,14 +245,17 @@
             cursor: pointer;
             font-size: 15px;
         }
+
         .btn-exec {
             background: linear-gradient(90deg, #9a40ff, #cd72ff);
             color: white;
         }
+
         .btn-stop {
             background: #9e2e4e;
             color: white;
         }
+
         .logs-window {
             background: #03010e;
             border-radius: 32px;
@@ -249,7 +267,6 @@
             color: #b5f0b5;
         }
 
-        /* toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -266,6 +283,7 @@
             transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             box-shadow: 0 4px 20px black;
         }
+
         .toast.show {
             transform: translateX(0);
         }
@@ -289,12 +307,11 @@
         <div class="version-tag">v7.2 // NEXTGEN</div>
     </div>
     <div class="tabs-row">
-        <button class="tab-btn active" data-tab="tabDash">📊 DASHBOARD</button>
-        <button class="tab-btn" data-tab="tabAttack">⚔️ EXECUTE ATTACK</button>
-        <button class="tab-btn" data-tab="tabLogs">📜 LIVE LOGS</button>
+        <button class="tab-btn active" data-tab="tabDash">DASHBOARD</button>
+        <button class="tab-btn" data-tab="tabAttack">EXECUTE ATTACK</button>
+        <button class="tab-btn" data-tab="tabLogs">LIVE LOGS</button>
     </div>
 
-    <!-- DASHBOARD -->
     <div id="tabDash" class="tab-pane active">
         <div class="stats-row">
             <div class="stat-box"><div class="stat-number" id="statPacketsDash">0</div><div class="label">PACKETS SENT</div></div>
@@ -302,13 +319,12 @@
             <div class="stat-box"><div class="stat-number" id="statPpsDash">0</div><div class="label">PPS (AVG)</div></div>
         </div>
         <div class="glass-card">
-            <div style="font-weight:bold; margin-bottom:12px;">🎯 CURRENT TARGET</div>
+            <div style="font-weight:bold; margin-bottom:12px;">CURRENT TARGET</div>
             <div id="dashTargetInfo">—</div>
             <div style="margin-top:12px; font-size:12px; color:#aa9eff;" id="dashMethodInfo"></div>
         </div>
     </div>
 
-    <!-- EXECUTE ATTACK -->
     <div id="tabAttack" class="tab-pane">
         <div class="glass-card">
             <div style="margin-bottom: 20px;">
@@ -318,10 +334,10 @@
             <div style="margin-bottom: 20px;">
                 <label>METHOD</label>
                 <select id="attackMethod">
-                    <option value="HTTP FLOOD">🔥 HTTP FLOOD (L7)</option>
-                    <option value="UDP FLOOD">💧 UDP FLOOD (L4)</option>
-                    <option value="SYN FLOOD">⚡ SYN FLOOD + SPOOF</option>
-                    <option value="ICMP STORM">📡 ICMP STORM</option>
+                    <option value="HTTP FLOOD">HTTP FLOOD (L7)</option>
+                    <option value="UDP FLOOD">UDP FLOOD (L4)</option>
+                    <option value="SYN FLOOD">SYN FLOOD + SPOOF</option>
+                    <option value="ICMP STORM">ICMP STORM</option>
                 </select>
             </div>
             <div class="double">
@@ -333,13 +349,12 @@
                 <input type="number" id="attackDuration" value="35" min="0">
             </div>
             <div style="display: flex; gap: 16px; margin-top: 10px;">
-                <button class="btn btn-exec" id="executeBtn">🚀 EXECUTE ATTACK</button>
-                <button class="btn btn-stop" id="terminateBtn">⛔ TERMINATE</button>
+                <button class="btn btn-exec" id="executeBtn">EXECUTE ATTACK</button>
+                <button class="btn btn-stop" id="terminateBtn">TERMINATE</button>
             </div>
         </div>
     </div>
 
-    <!-- LOGS -->
     <div id="tabLogs" class="tab-pane">
         <div class="logs-window" id="logsContainer">
             <div>[system] SILOS STRIKE v7.2 online</div>
@@ -348,68 +363,70 @@
     </div>
 </div>
 
-<div id="toastMessage" class="toast">✨ ready</div>
+<div id="toastMessage" class="toast">ready</div>
 
 <script>
-    // TOAST
-    function toast(msg, isError = false) {
-        const t = document.getElementById('toastMessage');
+    function toast(msg, isError) {
+        var t = document.getElementById('toastMessage');
         t.textContent = msg;
-        t.style.borderLeftColor = isError ? '#ff667a' : '#c56eff';
+        if (isError) { t.style.borderLeftColor = '#ff667a'; } else { t.style.borderLeftColor = '#c56eff'; }
         t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2600);
+        setTimeout(function() { t.classList.remove('show'); }, 2600);
     }
 
-    // LOGOWANIE
-    document.getElementById('doLogin').onclick = () => {
-        const u = document.getElementById('loginUser').value;
-        const p = document.getElementById('loginPass').value;
+    document.getElementById('doLogin').onclick = function() {
+        var u = document.getElementById('loginUser').value;
+        var p = document.getElementById('loginPass').value;
         if (u === "Silos" && p === "Licka") {
             document.getElementById('loginView').style.display = 'none';
             document.getElementById('appPanel').style.display = 'block';
-            toast("Access granted. SILOS STRIKE ready");
+            toast("Access granted. SILOS STRIKE ready", false);
         } else {
             document.getElementById('loginMsg').innerText = "Nieprawidłowe dane";
             toast("Login failed", true);
         }
     };
 
-    // ZAKŁADKI
-    const tabsBtns = document.querySelectorAll('.tab-btn');
-    const panes = document.querySelectorAll('.tab-pane');
-    tabsBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = btn.getAttribute('data-tab');
-            tabsBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            panes.forEach(p => p.classList.remove('active'));
+    var tabsBtns = document.querySelectorAll('.tab-btn');
+    var panes = document.querySelectorAll('.tab-pane');
+    for (var i = 0; i < tabsBtns.length; i++) {
+        tabsBtns[i].addEventListener('click', function() {
+            var id = this.getAttribute('data-tab');
+            for (var j = 0; j < tabsBtns.length; j++) {
+                tabsBtns[j].classList.remove('active');
+            }
+            this.classList.add('active');
+            for (var k = 0; k < panes.length; k++) {
+                panes[k].classList.remove('active');
+            }
             document.getElementById(id).classList.add('active');
         });
-    });
+    }
 
-    // DDoS ENGINE
-    let attackActive = false;
-    let attackInterval = null;
-    let stopTimer = null;
-    let packetTotal = 0;
-    let currentPps = 0;
-    let currentTargetText = "";
-    let currentMethodText = "";
+    var attackActive = false;
+    var attackInterval = null;
+    var stopTimer = null;
+    var packetTotal = 0;
+    var currentPps = 0;
+    var currentTargetText = "";
+    var currentMethodText = "";
 
-    const logsDiv = document.getElementById('logsContainer');
-    const statPacketsSpan = document.getElementById('statPacketsDash');
-    const statStatusSpan = document.getElementById('statStatusDash');
-    const statPpsSpan = document.getElementById('statPpsDash');
-    const dashTargetSpan = document.getElementById('dashTargetInfo');
-    const dashMethodSpan = document.getElementById('dashMethodInfo');
+    var logsDiv = document.getElementById('logsContainer');
+    var statPacketsSpan = document.getElementById('statPacketsDash');
+    var statStatusSpan = document.getElementById('statStatusDash');
+    var statPpsSpan = document.getElementById('statPpsDash');
+    var dashTargetSpan = document.getElementById('dashTargetInfo');
+    var dashMethodSpan = document.getElementById('dashMethodInfo');
 
-    function addLog(msg, isErr = false) {
-        const line = document.createElement('div');
-        line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    function addLog(msg, isErr) {
+        var line = document.createElement('div');
+        var now = new Date();
+        var time = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+        line.textContent = "[" + time + "] " + msg;
         if (isErr) line.style.color = "#ffa5bb";
         logsDiv.appendChild(line);
         line.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        if (!isErr) toast(msg.substring(0, 55));
+        if (!isErr) toast(msg.substring(0, 55), false);
     }
 
     function updateUI() {
@@ -417,7 +434,7 @@
         statStatusSpan.innerText = attackActive ? "ATTACKING" : "IDLE";
         statPpsSpan.innerText = currentPps;
         dashTargetSpan.innerText = currentTargetText || "—";
-        dashMethodSpan.innerText = currentMethodText ? `Method: ${currentMethodText}` : "";
+        dashMethodSpan.innerText = currentMethodText ? "Method: " + currentMethodText : "";
     }
 
     function stopAttack() {
@@ -426,50 +443,54 @@
         attackActive = false;
         currentPps = 0;
         updateUI();
-        addLog("Attack terminated by user or finished", true);
+        addLog("Attack terminated", true);
         toast("Attack stopped", true);
     }
 
     function startAttack() {
         if (attackActive) { toast("Attack already running", true); return; }
-        const target = document.getElementById('attackTarget').value.trim();
+        var target = document.getElementById('attackTarget').value.trim();
         if (!target) { toast("Enter target", true); return; }
-        const method = document.getElementById('attackMethod').value;
-        let threads = parseInt(document.getElementById('attackThreads').value);
+        var method = document.getElementById('attackMethod').value;
+        var threads = parseInt(document.getElementById('attackThreads').value);
         if (isNaN(threads) || threads < 1) threads = 50;
-        const spoof = document.getElementById('attackSpoof').value === "true";
-        let duration = parseInt(document.getElementById('attackDuration').value);
+        var spoof = document.getElementById('attackSpoof').value === "true";
+        var duration = parseInt(document.getElementById('attackDuration').value);
         if (isNaN(duration)) duration = 30;
 
         currentTargetText = target;
         currentMethodText = method;
-        addLog(`[LAUNCH] Target: ${target} | ${method} | Thr:${threads} | Spoof:${spoof ? "ON" : "OFF"} | Dur:${duration}s`);
+        addLog("[LAUNCH] Target: " + target + " | " + method + " | Thr:" + threads + " | Spoof:" + (spoof ? "ON" : "OFF") + " | Dur:" + duration + "s", false);
         attackActive = true;
         packetTotal = 0;
         updateUI();
 
-        let localPkt = 0;
-        attackInterval = setInterval(() => {
+        var localPkt = 0;
+        attackInterval = setInterval(function() {
             if (!attackActive) { clearInterval(attackInterval); attackInterval = null; return; }
-            const batch = Math.min(threads, 24);
-            for (let i = 0; i < batch; i++) {
+            var batch = threads;
+            if (batch > 24) batch = 24;
+            for (var i = 0; i < batch; i++) {
                 localPkt++;
                 packetTotal++;
-                let spoofPart = spoof ? ` (spoof: ${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)})` : '';
-                if (method === "HTTP FLOOD") addLog(`[HTTP] GET /${Math.random().toString(36).substring(5)} → ${target}${spoofPart}`);
-                else if (method === "UDP FLOOD") addLog(`[UDP] ${target}:${Math.floor(Math.random()*60000)} | len ${Math.floor(Math.random()*900)+100}${spoofPart}`);
-                else if (method === "SYN FLOOD") addLog(`[SYN] seq=${Math.floor(Math.random()*9999999)} window=65535 → ${target}${spoofPart}`);
-                else addLog(`[ICMP] echo request id=${Math.floor(Math.random()*65535)} -> ${target}${spoofPart}`);
+                var spoofPart = "";
+                if (spoof) {
+                    spoofPart = " (spoof: " + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + ")";
+                }
+                if (method === "HTTP FLOOD") addLog("[HTTP] GET /" + Math.random().toString(36).substring(5) + " -> " + target + spoofPart, false);
+                else if (method === "UDP FLOOD") addLog("[UDP] " + target + ":" + Math.floor(Math.random()*60000) + " | len " + (Math.floor(Math.random()*900)+100) + spoofPart, false);
+                else if (method === "SYN FLOOD") addLog("[SYN] seq=" + Math.floor(Math.random()*9999999) + " window=65535 -> " + target + spoofPart, false);
+                else addLog("[ICMP] echo request id=" + Math.floor(Math.random()*65535) + " -> " + target + spoofPart, false);
             }
             currentPps = Math.floor(batch * 4.2);
             updateUI();
         }, 200);
 
         if (duration > 0) {
-            stopTimer = setTimeout(() => {
+            stopTimer = setTimeout(function() {
                 if (attackActive) {
                     stopAttack();
-                    addLog(`Attack finished (${duration}s)`, false);
+                    addLog("Attack finished (" + duration + "s)", false);
                 }
             }, duration * 1000);
         }
@@ -478,7 +499,7 @@
     document.getElementById('executeBtn').addEventListener('click', startAttack);
     document.getElementById('terminateBtn').addEventListener('click', stopAttack);
 
-    setInterval(() => { if(attackActive) updateUI(); }, 300);
+    setInterval(function() { if(attackActive) updateUI(); }, 300);
 </script>
 </body>
 </html>
