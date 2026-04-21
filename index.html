@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SILOS STRIKE | DDoS Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0b0710;
+            font-family: 'Segoe UI', 'Inter', 'Roboto', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .panel, .login-box {
+            position: relative;
+            z-index: 2;
+            width: 550px;
+            max-width: 90%;
+            background: rgba(20, 15, 35, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            border: 1px solid rgba(160, 100, 220, 0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(160,100,220,0.3);
+            padding: 32px 28px;
+            transition: 0.2s;
+        }
+
+        .login-box h2 {
+            color: #cbb2ff;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .login-box .sub {
+            color: #9a86c9;
+            font-size: 13px;
+            margin-bottom: 28px;
+            border-left: 3px solid #aa7eff;
+            padding-left: 12px;
+        }
+        .input-field {
+            margin-bottom: 20px;
+        }
+        .input-field label {
+            display: block;
+            color: #cbb2ff;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .input-field input {
+            width: 100%;
+            background: #0e0a18;
+            border: 1px solid #3a2a5a;
+            border-radius: 24px;
+            padding: 14px 18px;
+            color: #f0e6ff;
+            font-size: 15px;
+            outline: none;
+        }
+        .input-field input:focus {
+            border-color: #bf8eff;
+        }
+        .login-btn {
+            width: 100%;
+            background: #6a3e9e;
+            border: none;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            margin-top: 12px;
+            font-family: monospace;
+        }
+        .login-btn:active {
+            background: #4f2e7a;
+        }
+        .error-msg {
+            color: #ff9797;
+            font-size: 12px;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        /* panel DDoS - ukryty początkowo */
+        .ddos-panel {
+            display: none;
+        }
+        .header {
+            border-bottom: 1px solid #3a2a5a;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ddccff;
+        }
+        .title span {
+            color: #bf6eff;
+        }
+        .version {
+            color: #8a76b0;
+            font-size: 11px;
+        }
+        .attack-card {
+            background: #110e1c;
+            border-radius: 24px;
+            padding: 22px;
+            margin: 20px 0;
+            border: 1px solid #2f2350;
+        }
+        .input-group {
+            margin-bottom: 18px;
+        }
+        .input-group label {
+            color: #b6a2e0;
+            font-size: 11px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 6px;
+        }
+        input, select {
+            width: 100%;
+            background: #07040e;
+            border: 1px solid #352c50;
+            border-radius: 20px;
+            padding: 12px 16px;
+            color: #e6dcff;
+            font-size: 14px;
+            font-family: monospace;
+            outline: none;
+        }
+        .row-2 {
+            display: flex;
+            gap: 14px;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 32px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+        .btn-start {
+            background: #7c3fd4;
+            color: white;
+        }
+        .btn-start:active {
+            background: #5f2fa8;
+        }
+        .btn-stop {
+            background: #1e1930;
+            color: #bbaaff;
+            border: 1px solid #4a3a70;
+        }
+        .log-console {
+            background: #07040e;
+            border-radius: 24px;
+            padding: 16px;
+            height: 210px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #cbbaff;
+            border: 1px solid #2a2048;
+            margin-top: 24px;
+        }
+        .log-line {
+            padding: 4px 0;
+            border-bottom: 0.5px solid #221f36;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 10px;
+            color: #5e4c86;
+        }
+    </style>
+</head>
+<body>
+<canvas id="starsCanvas"></canvas>
+
+<!-- LOGIN -->
+<div id="loginContainer" class="login-box">
+    <h2>SILOS STRIKE</h2>
+    <div class="sub">logowanie do core</div>
+    <div class="input-field">
+        <label>NAZWA</label>
+        <input type="text" id="loginUsername" placeholder="nazwa użytkownika">
+    </div>
+    <div class="input-field">
+        <label>HASŁO</label>
+        <input type="password" id="loginPassword" placeholder="********">
+    </div>
+    <button class="login-btn" id="loginBtn">ZALOGUJ</button>
+    <div id="loginError" class="error-msg"></div>
+</div>
+
+<!-- PANEL DDoS (ukryty) -->
+<div id="ddosPanel" class="ddos-panel panel">
+    <div class="header">
+        <div class="title">SILOS <span>STRIKE</span></div>
+        <div class="version">v6.2 // DDoS ENGINE</div>
+    </div>
+    <div class="attack-card">
+        <div class="input-group">
+            <label>TARGET (IP / DOMAIN)</label>
+            <input type="text" id="target" placeholder="192.168.1.1 | example.com">
+        </div>
+        <div class="input-group">
+            <label>ATTACK VECTOR</label>
+            <select id="attackType">
+                <option value="http">HTTP FLOOD (L7)</option>
+                <option value="udp">UDP FLOOD (L4)</option>
+                <option value="syn">SYN FLOOD + SPOOF</option>
+                <option value="icmp">ICMP ECHO STORM</option>
+            </select>
+        </div>
+        <div class="row-2">
+            <div>
+                <label>THREADS / PPS</label>
+                <input type="number" id="threads" value="65" min="1" max="999">
+            </div>
+            <div>
+                <label>SPOOF SOURCE</label>
+                <select id="spoof">
+                    <option value="true">ENABLED</option>
+                    <option value="false">DISABLED</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group">
+            <label>DURATION (SEC, 0 = INFINITE)</label>
+            <input type="number" id="duration" value="45" min="0">
+        </div>
+        <button class="btn btn-start" id="startBtn">EXECUTE ATTACK</button>
+        <button class="btn btn-stop" id="stopBtn">TERMINATE</button>
+    </div>
+    <div class="log-console" id="logPanel">
+        <div class="log-line">[system] SILOS STRIKE ONLINE</div>
+        <div class="log-line">[system] ready for DDoS operation</div>
+    </div>
+    <footer>spoofing active • raw packets • layer 7 bypass</footer>
+</div>
+
+<script>
+    // animowane tło - gwiazdy + particle
+    const canvas = document.getElementById('starsCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class StarParticle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.size = Math.random() * 2.8 + 0.6;
+            this.speedX = (Math.random() - 0.5) * 0.7;
+            this.speedY = Math.random() * 1.0 + 0.2;
+            this.alpha = Math.random() * 0.7 + 0.2;
+            this.color = `rgba(180, 150, 230, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x > width) this.x = 0;
+            if (this.x < 0) this.x = width;
+            if (this.y > height) this.y = 0;
+            if (this.y < 0) this.y = height;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+    }
+    for (let i = 0; i < 220; i++) particles.push(new StarParticle());
+    function animateStars() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = "#0b0710";
+        ctx.fillRect(0, 0, width, height);
+        for (let p of particles) { p.update(); p.draw(); }
+        requestAnimationFrame(animateStars);
+    }
+    animateStars();
+
+    // LOGOWANIE
+    const loginContainer = document.getElementById('loginContainer');
+    const ddosPanelDiv = document.getElementById('ddosPanel');
+    const loginError = document.getElementById('loginError');
+    const loginBtn = document.getElementById('loginBtn');
+    const usernameInput = document.getElementById('loginUsername');
+    const passwordInput = document.getElementById('loginPassword');
+
+    loginBtn.addEventListener('click', () => {
+        const user = usernameInput.value.trim();
+        const pass = passwordInput.value;
+        if (user === "Silos" && pass === "Licka") {
+            loginContainer.style.display = "none";
+            ddosPanelDiv.style.display = "block";
+        } else {
+            loginError.innerText = "błędna nazwa lub hasło";
+        }
+    });
+
+    // DDoS LOGIC
+    let attackInterval = null;
+    let stopTimeout = null;
+    let active = false;
+    const logPanel = document.getElementById('logPanel');
+    const targetInput = document.getElementById('target');
+    const attackTypeSelect = document.getElementById('attackType');
+    const threadsInput = document.getElementById('threads');
+    const spoofSelect = document.getElementById('spoof');
+    const durationInput = document.getElementById('duration');
+
+    function addLog(msg, isError = false) {
+        const line = document.createElement('div');
+        line.className = 'log-line';
+        if (isError) line.style.color = "#ffa0a0";
+        line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        logPanel.appendChild(line);
+        line.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function stopAttack() {
+        if (attackInterval) { clearInterval(attackInterval); attackInterval = null; }
+        if (stopTimeout) { clearTimeout(stopTimeout); stopTimeout = null; }
+        active = false;
+        addLog("[ABORT] Attack terminated", true);
+    }
+
+    function startAttack() {
+        if (active) { addLog("[ERROR] Attack already running", true); return; }
+        let target = targetInput.value.trim();
+        if (!target) { addLog("[ERROR] Target field empty", true); return; }
+        let attackType = attackTypeSelect.value;
+        let threads = parseInt(threadsInput.value);
+        let spoofEnabled = spoofSelect.value === "true";
+        let duration = parseInt(durationInput.value);
+        if (isNaN(threads) || threads < 1) threads = 50;
+        if (isNaN(duration)) duration = 30;
+        addLog(`[INIT] Target: ${target} | Method: ${attackType.toUpperCase()} | Threads: ${threads} | Spoof: ${spoofEnabled ? "ON" : "OFF"}`);
+        active = true;
+        let pktCount = 0;
+        attackInterval = setInterval(() => {
+            if (!active) { clearInterval(attackInterval); attackInterval = null; return; }
+            let maxPer = Math.min(threads, 18);
+            for (let i = 0; i < maxPer; i++) {
+                pktCount++;
+                let spoofIp = spoofEnabled ? ` | spoof: ${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}` : '';
+                if (attackType === "http") addLog(`[HTTP] GET /${Math.random().toString(36).substring(4)} → ${target}${spoofIp} | size: ${Math.floor(Math.random()*800)+200}B`);
+                else if (attackType === "udp") addLog(`[UDP] ${target}:${Math.floor(Math.random()*60000)+1024} | len ${Math.floor(Math.random()*1200)+80}B${spoofIp}`);
+                else if (attackType === "syn") addLog(`[SYN] seq=${Math.floor(Math.random()*9999999)} | window=8192 | spoofed IP -> ${target}${spoofIp}`);
+                else if (attackType === "icmp") addLog(`[ICMP] type=8 code=0 | ping to ${target} | id=${Math.floor(Math.random()*65535)}${spoofIp}`);
+            }
+            addLog(`[STATS] packets sent: ${pktCount} | rate ~${(threads * 2.2).toFixed(0)} pps`);
+        }, 220);
+        if (duration > 0) stopTimeout = setTimeout(() => { if (active) { stopAttack(); addLog(`[FINISH] Attack completed (${duration}s)`); } }, duration * 1000);
+    }
+
+    document.getElementById('startBtn')?.addEventListener('click', startAttack);
+    document.getElementById('stopBtn')?.addEventListener('click', stopAttack);
+</script>
+</body>
+</html>
