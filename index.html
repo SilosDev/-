@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#000000">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
-    <title>SILK SYN | Polska DDoślarka</title>
+    <title>SILK BY ?? | Panel</title>
     <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>
     <style>
         * {
@@ -39,15 +39,25 @@
             pointer-events: none;
             z-index: 0;
         }
-        .lottie-container {
+        .lottie-trigger {
             position: fixed;
             bottom: 20px;
             left: 20px;
-            width: 180px;
-            height: 180px;
+            width: 150px;
+            height: 150px;
             z-index: 1;
-            opacity: 0.6;
+            opacity: 0.5;
             pointer-events: none;
+        }
+        .lottie-bg {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 100px;
+            height: 100px;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
         }
         .orb {
             position: fixed;
@@ -88,7 +98,7 @@
             border-radius: 48px;
             border: 1px solid rgba(200, 80, 255, 0.4);
             padding: 44px 36px;
-            box-shadow: 0 30px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(200,80,255,0.2);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.7);
         }
         .login-card h1 {
             font-size: 36px;
@@ -138,7 +148,7 @@
             display: none;
             position: relative;
             z-index: 10;
-            width: 920px;
+            width: 960px;
             max-width: 95%;
             background: rgba(8, 4, 20, 0.65);
             backdrop-filter: blur(28px);
@@ -255,6 +265,7 @@
             box-shadow: 0 0 10px rgba(255,68,204,0.2);
         }
         .double { display: flex; gap: 16px; }
+        .triple { display: flex; gap: 16px; }
         .btn {
             border: none;
             padding: 12px 24px;
@@ -268,6 +279,7 @@
         .btn-exec { background: linear-gradient(90deg, #aa44ff, #ff44cc); color: white; }
         .btn-stop { background: #882244; color: #ffbbdd; border: 1px solid #ff66aa; }
         .logs-window {
+            position: relative;
             background: rgba(0, 0, 0, 0.7);
             border-radius: 36px;
             padding: 20px;
@@ -303,40 +315,38 @@
 </head>
 <body>
 <canvas id="particleCanvas"></canvas>
-<div class="lottie-container">
-    <dotlottie-wc src="https://lottie.host/33ee256d-6df6-4829-9568-ff066f9c3de5/MsowL0wALe.lottie" style="width: 100%;height: 100%" autoplay loop></dotlottie-wc>
-</div>
+<div class="lottie-trigger" id="triggerLottie"></div>
 <div class="orb"></div>
 <div class="orb2"></div>
 
 <div id="loginView" class="login-card">
-    <h1>SILK SYN</h1>
-    <p>Polska DDoślarka | Najebana Paka</p>
-    <input type="text" id="loginUser" placeholder="login">
-    <input type="password" id="loginPass" placeholder="hasło">
-    <button id="doLogin">WBIJAJ</button>
+    <h1>SILK BY ??</h1>
+    <p>next generation panel</p>
+    <input type="text" id="loginUser" placeholder="username">
+    <input type="password" id="loginPass" placeholder="password">
+    <button id="doLogin">Login</button>
     <div id="loginMsg" class="error"></div>
 </div>
 
 <div id="appPanel" class="main-panel">
     <div class="panel-header">
-        <h2>SILK <span style="color:#ff66ee">SYN</span></h2>
-        <div class="version-tag">v9.0 // POLISH POWER</div>
+        <h2>SILK <span style="color:#ff66ee">BY ??</span></h2>
+        <div class="version-tag">v9.0 // CORE</div>
     </div>
     <div class="tabs-row">
-        <button class="tab-btn active" data-tab="tabDash">PULPIT</button>
-        <button class="tab-btn" data-tab="tabAttack">WYJEB BOMBE</button>
-        <button class="tab-btn" data-tab="tabLogs">LOGI</button>
+        <button class="tab-btn active" data-tab="tabDash">Dashboard</button>
+        <button class="tab-btn" data-tab="tabAttack">Execute</button>
+        <button class="tab-btn" data-tab="tabLogs">Logs</button>
     </div>
 
     <div id="tabDash" class="tab-pane active">
         <div class="stats-row">
-            <div class="stat-box"><div class="stat-number" id="statPacketsDash">0</div><div class="label">WYSLANE PAKIETY</div></div>
-            <div class="stat-box"><div class="stat-number" id="statStatusDash">BEZ RUCHU</div><div class="label">STATUS</div></div>
-            <div class="stat-box"><div class="stat-number" id="statPpsDash">0</div><div class="label">PAKIETY/SEK</div></div>
+            <div class="stat-box"><div class="stat-number" id="statPacketsDash">0</div><div class="label">Packets Sent</div></div>
+            <div class="stat-box"><div class="stat-number" id="statStatusDash">Idle</div><div class="label">Status</div></div>
+            <div class="stat-box"><div class="stat-number" id="statPpsDash">0</div><div class="label">PPS</div></div>
         </div>
         <div class="glass-card">
-            <div style="font-weight:600; margin-bottom:12px; color:#ccb5ff;">CEL</div>
+            <div style="font-weight:600; margin-bottom:12px; color:#ccb5ff;">Current Target</div>
             <div id="dashTargetInfo" style="font-size:18px; font-weight:500;">—</div>
             <div style="margin-top:12px; font-size:12px; color:#aa99dd;" id="dashMethodInfo"></div>
         </div>
@@ -345,45 +355,94 @@
     <div id="tabAttack" class="tab-pane">
         <div class="glass-card">
             <div style="margin-bottom: 20px;">
-                <label style="display:block; margin-bottom:8px; color:#bbaaee;">CEL (IP / DOMENA)</label>
+                <label style="display:block; margin-bottom:8px; color:#bbaaee;">Target (IP / Domain)</label>
                 <input type="text" id="attackTarget" placeholder="example.com | 1.2.3.4">
             </div>
-            <div style="margin-bottom: 20px;">
-                <label style="display:block; margin-bottom:8px; color:#bbaaee;">METODA</label>
-                <select id="attackMethod">
-                    <option value="HTTP FLOOD">HTTP FLOOD (L7)</option>
-                    <option value="UDP FLOOD">UDP FLOOD (L4)</option>
-                    <option value="SYN FLOOD">SYN FLOOD + SPOOF</option>
-                    <option value="ICMP STORM">ICMP STORM</option>
-                </select>
+            <div class="triple">
+                <div style="flex:1">
+                    <label style="display:block; margin-bottom:8px; color:#bbaaee;">Method</label>
+                    <select id="attackMethod">
+                        <option value="HTTP FLOOD">HTTP Flood (L7)</option>
+                        <option value="UDP FLOOD">UDP Flood (L4)</option>
+                        <option value="SYN FLOOD">SYN Flood + Spoof</option>
+                        <option value="ICMP STORM">ICMP Storm</option>
+                    </select>
+                </div>
+                <div style="flex:1">
+                    <label style="display:block; margin-bottom:8px; color:#bbaaee;">Port</label>
+                    <input type="number" id="attackPort" value="80" min="1" max="65535">
+                </div>
             </div>
-            <div class="double">
-                <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">WĄTKI</label><input type="number" id="attackThreads" value="75" min="1"></div>
-                <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">SPOOF IP</label><select id="attackSpoof"><option value="true">ON</option><option value="false">OFF</option></select></div>
+            <div class="double" style="margin-top: 16px;">
+                <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">Threads</label><input type="number" id="attackThreads" value="75" min="1"></div>
+                <div style="flex:1"><label style="display:block; margin-bottom:8px; color:#bbaaee;">Spoof IP</label><select id="attackSpoof"><option value="true">ON</option><option value="false">OFF</option></select></div>
             </div>
             <div style="margin: 20px 0;">
-                <label style="display:block; margin-bottom:8px; color:#bbaaee;">CZAS (sekundy, 0 = bez limitu)</label>
+                <label style="display:block; margin-bottom:8px; color:#bbaaee;">Duration (seconds, 0 = infinite)</label>
                 <input type="number" id="attackDuration" value="35" min="0">
             </div>
             <div style="display: flex; gap: 16px; margin-top: 10px;">
-                <button class="btn btn-exec" id="executeBtn">💣 WYJEB BOMBE</button>
-                <button class="btn btn-stop" id="terminateBtn">⛔ ZATRZYMAJ</button>
+                <button class="btn btn-exec" id="executeBtn">Execute Attack</button>
+                <button class="btn btn-stop" id="terminateBtn">Terminate</button>
             </div>
         </div>
     </div>
 
     <div id="tabLogs" class="tab-pane">
         <div class="logs-window" id="logsContainer">
-            <div>[system] Silk SYN v9.0 online</div>
-            <div>[system] gotowy do rozpierdolu</div>
+            <div>[system] SILK BY ?? online</div>
+            <div>[system] ready</div>
+            <div class="lottie-bg" id="bgLottie"></div>
         </div>
     </div>
 </div>
 
-<div id="toastMessage" class="toast">gotowy</div>
+<div id="toastMessage" class="toast">ready</div>
 
 <script>
-    // PARTICLE SYSTEM
+    let lottieContainer = document.getElementById('triggerLottie');
+    let bgLottieContainer = document.getElementById('bgLottie');
+    let lottieActive = false;
+    
+    function createLottieInContainer(container, src, size) {
+        container.innerHTML = '';
+        let lottie = document.createElement('dotlottie-wc');
+        lottie.setAttribute('src', src);
+        lottie.style.width = size;
+        lottie.style.height = size;
+        lottie.setAttribute('autoplay', '');
+        lottie.setAttribute('loop', 'false');
+        container.appendChild(lottie);
+        lottie.addEventListener('complete', () => {
+            container.innerHTML = '';
+        });
+    }
+    
+    function playAnimationOnce() {
+        if (!lottieActive) {
+            lottieActive = true;
+            createLottieInContainer(lottieContainer, 'https://lottie.host/33ee256d-6df6-4829-9568-ff066f9c3de5/MsowL0wALe.lottie', '150px');
+            setTimeout(() => { lottieActive = false; }, 2000);
+        }
+    }
+    
+    if (bgLottieContainer) {
+        let bgLottie = document.createElement('dotlottie-wc');
+        bgLottie.setAttribute('src', 'https://lottie.host/18b6cf56-8790-4482-8cb4-9660091d3950/QzRV2EJcJH.lottie');
+        bgLottie.style.width = '100px';
+        bgLottie.style.height = '100px';
+        bgLottie.setAttribute('autoplay', '');
+        bgLottie.setAttribute('loop', '');
+        bgLottie.style.position = 'absolute';
+        bgLottie.style.bottom = '10px';
+        bgLottie.style.right = '10px';
+        bgLottie.style.opacity = '0.3';
+        bgLottie.style.pointerEvents = 'none';
+        bgLottieContainer.appendChild(bgLottie);
+    }
+    
+    setInterval(playAnimationOnce, 12000);
+    
     const canvas = document.getElementById('particleCanvas');
     const ctx = canvas.getContext('2d');
     let width, height;
@@ -429,7 +488,6 @@
     }
     animateParticles();
 
-    // TOAST
     function toast(msg, isError) {
         var t = document.getElementById('toastMessage');
         t.textContent = msg;
@@ -438,14 +496,13 @@
         setTimeout(function() { t.classList.remove('show'); }, 2600);
     }
 
-    // BLOKOWANE STRONY
     const blockedDomains = ['youtube.com', 'www.youtube.com', 'youtu.be', 'facebook.com', 'www.facebook.com', 'instagram.com', 'www.instagram.com', 'twitter.com', 'www.twitter.com', 'x.com', 'tiktok.com', 'www.tiktok.com', 'discord.com', 'www.discord.com', 'google.com', 'www.google.com', 'twitch.tv', 'www.twitch.tv', 'reddit.com', 'www.reddit.com'];
 
     function isValidTarget(target) {
         let lowerTarget = target.toLowerCase();
         for (let blocked of blockedDomains) {
             if (lowerTarget.includes(blocked)) {
-                return { valid: false, reason: 'Nie można atakować serwisów społecznościowych (YouTube, Facebook, Instagram, TikTok, Discord, Google itp.)' };
+                return { valid: false, reason: 'Social media platforms are blocked' };
             }
         }
         let ipPattern = /^(\d{1,3}\.){3}\d{1,3}$/;
@@ -453,31 +510,29 @@
         if (ipPattern.test(lowerTarget)) {
             let parts = lowerTarget.split('.');
             for (let p of parts) {
-                if (parseInt(p) > 255) return { valid: false, reason: 'Nieprawidłowy adres IP' };
+                if (parseInt(p) > 255) return { valid: false, reason: 'Invalid IP address' };
             }
             return { valid: true };
         } else if (domainPattern.test(lowerTarget)) {
             return { valid: true };
         } else {
-            return { valid: false, reason: 'Nie ma takiego adresu / strony' };
+            return { valid: false, reason: 'Invalid target' };
         }
     }
 
-    // LOGOWANIE
     document.getElementById('doLogin').onclick = function() {
         var u = document.getElementById('loginUser').value;
         var p = document.getElementById('loginPass').value;
         if (u === "Silos" && p === "Licka") {
             document.getElementById('loginView').style.display = 'none';
             document.getElementById('appPanel').style.display = 'block';
-            toast("Wbijasz! Silk SYN gotowy do roboty", false);
+            toast("Access granted", false);
         } else {
-            document.getElementById('loginMsg').innerText = "Złe dane debilu";
-            toast("Nie udało się", true);
+            document.getElementById('loginMsg').innerText = "Invalid credentials";
+            toast("Login failed", true);
         }
     };
 
-    // ZAKŁADKI
     var tabsBtns = document.querySelectorAll('.tab-btn');
     var panes = document.querySelectorAll('.tab-pane');
     for (var i = 0; i < tabsBtns.length; i++) {
@@ -494,7 +549,6 @@
         });
     }
 
-    // DDoS ENGINE
     var attackActive = false;
     var attackInterval = null;
     var stopTimer = null;
@@ -523,10 +577,10 @@
 
     function updateUI() {
         statPacketsSpan.innerText = packetTotal;
-        statStatusSpan.innerText = attackActive ? "ATakuje!" : "BEZ RUCHU";
+        statStatusSpan.innerText = attackActive ? "ATTACKING" : "IDLE";
         statPpsSpan.innerText = currentPps;
         dashTargetSpan.innerText = currentTargetText || "—";
-        dashMethodSpan.innerText = currentMethodText ? "Metoda: " + currentMethodText : "";
+        dashMethodSpan.innerText = currentMethodText ? "Method: " + currentMethodText : "";
     }
 
     function stopAttack() {
@@ -535,32 +589,34 @@
         attackActive = false;
         currentPps = 0;
         updateUI();
-        addLog("Atak zatrzymany!", true);
-        toast("Atak zatrzymany", true);
+        addLog("Attack terminated", true);
+        toast("Attack stopped", true);
     }
 
     function startAttack() {
-        if (attackActive) { toast("Atak już leci!", true); return; }
+        if (attackActive) { toast("Attack already running", true); return; }
         var target = document.getElementById('attackTarget').value.trim();
-        if (!target) { toast("Wpisz cel!", true); return; }
+        if (!target) { toast("Enter target", true); return; }
         
         var validation = isValidTarget(target);
         if (!validation.valid) {
             toast(validation.reason, true);
-            addLog("BLAD: " + validation.reason, true);
+            addLog("ERROR: " + validation.reason, true);
             return;
         }
         
         var method = document.getElementById('attackMethod').value;
+        var port = parseInt(document.getElementById('attackPort').value);
+        if (isNaN(port) || port < 1 || port > 65535) port = 80;
         var threads = parseInt(document.getElementById('attackThreads').value);
         if (isNaN(threads) || threads < 1) threads = 50;
         var spoof = document.getElementById('attackSpoof').value === "true";
         var duration = parseInt(document.getElementById('attackDuration').value);
         if (isNaN(duration)) duration = 30;
 
-        currentTargetText = target;
+        currentTargetText = target + ":" + port;
         currentMethodText = method;
-        addLog("[START] Cel: " + target + " | " + method + " | Watki:" + threads + " | Spoof:" + (spoof ? "ON" : "OFF") + " | Czas:" + duration + "s", false);
+        addLog("[INIT] Target: " + target + ":" + port + " | " + method + " | Threads:" + threads + " | Spoof:" + (spoof ? "ON" : "OFF") + " | Duration:" + duration + "s", false);
         attackActive = true;
         packetTotal = 0;
         updateUI();
@@ -575,9 +631,9 @@
                 if (spoof) {
                     spoofPart = " (spoof: " + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + "." + Math.floor(Math.random()*255) + ")";
                 }
-                if (method === "HTTP FLOOD") addLog("[HTTP] GET /" + Math.random().toString(36).substring(5) + " -> " + target + spoofPart, false);
-                else if (method === "UDP FLOOD") addLog("[UDP] " + target + ":" + Math.floor(Math.random()*60000) + " | len " + (Math.floor(Math.random()*900)+100) + spoofPart, false);
-                else if (method === "SYN FLOOD") addLog("[SYN] seq=" + Math.floor(Math.random()*9999999) + " window=65535 -> " + target + spoofPart, false);
+                if (method === "HTTP FLOOD") addLog("[HTTP] GET /" + Math.random().toString(36).substring(5) + " -> " + target + ":" + port + spoofPart, false);
+                else if (method === "UDP FLOOD") addLog("[UDP] " + target + ":" + port + " | len " + (Math.floor(Math.random()*900)+100) + spoofPart, false);
+                else if (method === "SYN FLOOD") addLog("[SYN] seq=" + Math.floor(Math.random()*9999999) + " window=65535 -> " + target + ":" + port + spoofPart, false);
                 else addLog("[ICMP] echo request id=" + Math.floor(Math.random()*65535) + " -> " + target + spoofPart, false);
             }
             currentPps = Math.floor(batch * 4.2);
@@ -588,7 +644,7 @@
             stopTimer = setTimeout(function() {
                 if (attackActive) {
                     stopAttack();
-                    addLog("Atak zakonczony (" + duration + "s)", false);
+                    addLog("Attack finished (" + duration + "s)", false);
                 }
             }, duration * 1000);
         }
