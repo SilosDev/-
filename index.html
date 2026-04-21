@@ -20,8 +20,8 @@
             min-height: 100vh;
         }
         body {
-            background: radial-gradient(circle at 30% 10%, #0a0718, #010001);
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: radial-gradient(ellipse at 40% 20%, #0c0a1a, #020105);
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -30,66 +30,92 @@
         }
         .orb {
             position: fixed;
-            width: 70vw;
-            height: 70vw;
-            background: radial-gradient(circle, rgba(120, 60, 220, 0.2), transparent);
+            width: 80vw;
+            height: 80vw;
+            background: radial-gradient(circle, rgba(100, 70, 200, 0.15), transparent 70%);
             border-radius: 50%;
-            top: -20%;
-            right: -20%;
+            top: -30%;
+            right: -30%;
             z-index: 0;
-            animation: floatGlow 16s infinite alternate;
+            animation: floatGlow 20s infinite alternate ease-in-out;
+        }
+        .orb2 {
+            position: fixed;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(180, 100, 255, 0.08), transparent 70%);
+            border-radius: 50%;
+            bottom: -30%;
+            left: -20%;
+            z-index: 0;
+            animation: floatGlow2 18s infinite alternate ease-in-out;
         }
         @keyframes floatGlow {
-            0% { transform: translate(0,0) scale(1); opacity: 0.4; }
-            100% { transform: translate(-80px, 100px) scale(1.3); opacity: 0.7; }
+            0% { transform: translate(0,0) scale(1); opacity: 0.3; }
+            100% { transform: translate(-60px, 80px) scale(1.4); opacity: 0.6; }
+        }
+        @keyframes floatGlow2 {
+            0% { transform: translate(0,0) scale(1); opacity: 0.2; }
+            100% { transform: translate(70px, -60px) scale(1.3); opacity: 0.5; }
         }
         .login-card {
             position: relative;
             z-index: 10;
             width: 380px;
-            background: rgba(10, 8, 20, 0.8);
-            backdrop-filter: blur(20px);
-            border-radius: 56px;
-            border: 1px solid rgba(170, 120, 255, 0.4);
+            background: rgba(8, 6, 18, 0.7);
+            backdrop-filter: blur(24px);
+            border-radius: 48px;
+            border: 1px solid rgba(140, 100, 220, 0.35);
             padding: 44px 36px;
-            box-shadow: 0 30px 50px rgba(0,0,0,0.5);
-            transition: 0.2s;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(140,100,220,0.1);
+            transition: all 0.3s ease;
         }
         .login-card h1 {
-            font-size: 38px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #e2c6ff, #aa6eff);
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e0ccff, #b07eff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
         .login-card p {
-            color: #9a8ec2;
+            color: #8a7bb5;
             margin-bottom: 32px;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 400;
         }
         .login-card input {
             width: 100%;
-            background: #0d0b1a;
-            border: 1px solid #2e2850;
-            border-radius: 44px;
+            background: rgba(13, 10, 26, 0.8);
+            border: 1px solid #2a2350;
+            border-radius: 40px;
             padding: 14px 20px;
             margin-bottom: 18px;
-            color: white;
+            color: #f0eaff;
             font-size: 15px;
             outline: none;
+            transition: all 0.2s;
+        }
+        .login-card input:focus {
+            border-color: #9a6eff;
+            box-shadow: 0 0 12px rgba(154,110,255,0.2);
         }
         .login-card button {
             width: 100%;
-            background: linear-gradient(90deg, #884dff, #c46eff);
+            background: linear-gradient(90deg, #7a44dd, #b27aff);
             border: none;
             padding: 14px;
-            border-radius: 44px;
-            font-weight: bold;
+            border-radius: 40px;
+            font-weight: 600;
             font-size: 18px;
             color: white;
             cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .login-card button:active {
+            transform: scale(0.97);
         }
         .error {
             color: #ff8a9f;
@@ -101,113 +127,132 @@
             display: none;
             position: relative;
             z-index: 10;
-            width: 800px;
+            width: 880px;
             max-width: 95%;
-            background: rgba(12, 9, 24, 0.7);
-            backdrop-filter: blur(24px);
-            border-radius: 56px;
-            border: 1px solid rgba(160, 110, 255, 0.35);
+            background: rgba(8, 6, 18, 0.6);
+            backdrop-filter: blur(28px);
+            border-radius: 52px;
+            border: 1px solid rgba(140, 100, 220, 0.3);
             overflow: hidden;
-            box-shadow: 0 25px 45px black;
-            animation: slideUp 0.5s ease;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(140,100,220,0.1);
+            animation: slideUp 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.1);
         }
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(50px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         .panel-header {
-            padding: 26px 32px 0 32px;
+            padding: 28px 36px 0 36px;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
+            border-bottom: 1px solid rgba(140,100,220,0.2);
+            padding-bottom: 18px;
         }
         .panel-header h2 {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, white, #c68eff);
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #c69eff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            letter-spacing: -0.3px;
         }
         .version-tag {
-            background: #2a1f4a;
-            padding: 6px 16px;
-            border-radius: 60px;
-            font-size: 11px;
-            color: #dbbaff;
+            background: rgba(60, 40, 110, 0.5);
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-size: 10px;
+            color: #cbb5ff;
+            font-weight: 500;
         }
         .tabs-row {
             display: flex;
-            gap: 12px;
-            padding: 24px 32px 0 32px;
+            gap: 10px;
+            padding: 22px 36px 0 36px;
         }
         .tab-btn {
-            background: rgba(30, 22, 55, 0.6);
+            background: rgba(30, 22, 55, 0.5);
             border: none;
-            padding: 10px 28px;
+            padding: 9px 26px;
             border-radius: 40px;
-            font-weight: 600;
-            color: #bcb0e6;
+            font-weight: 500;
+            color: #b5a6e0;
             cursor: pointer;
-            transition: 0.2s;
-            font-size: 14px;
+            transition: all 0.2s;
+            font-size: 13px;
+            backdrop-filter: blur(4px);
         }
         .tab-btn.active {
-            background: #7b40e0;
+            background: linear-gradient(120deg, #6a38d0, #9a5eff);
             color: white;
-            box-shadow: 0 0 12px #a56eff;
+            box-shadow: 0 4px 14px rgba(106,56,208,0.3);
         }
         .tab-pane {
             display: none;
-            padding: 28px 32px 36px 32px;
-            animation: fadePane 0.25s ease;
+            padding: 28px 36px 36px 36px;
+            animation: fadePane 0.3s ease;
         }
         .tab-pane.active {
             display: block;
         }
         @keyframes fadePane {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .glass-card {
-            background: rgba(0, 0, 0, 0.45);
-            border-radius: 40px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 36px;
             padding: 24px;
             margin-bottom: 24px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(140,100,220,0.2);
+            backdrop-filter: blur(4px);
         }
         .stats-row {
             display: flex;
             gap: 18px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         .stat-box {
-            background: #0a071a;
+            background: rgba(10, 7, 22, 0.7);
             border-radius: 32px;
-            padding: 20px;
+            padding: 22px 16px;
             flex: 1;
             text-align: center;
+            border: 1px solid rgba(140,100,220,0.2);
+            transition: transform 0.2s;
+        }
+        .stat-box:hover {
+            transform: translateY(-2px);
+            border-color: rgba(140,100,220,0.4);
         }
         .stat-number {
-            font-size: 36px;
-            font-weight: 800;
-            color: #e2b6ff;
+            font-size: 38px;
+            font-weight: 700;
+            color: #e5ccff;
+            letter-spacing: -0.5px;
         }
         .label {
             font-size: 11px;
             text-transform: uppercase;
-            color: #aaa;
-            margin-top: 6px;
+            color: #8a7bb0;
+            margin-top: 8px;
+            font-weight: 500;
         }
         input, select {
-            background: #0c0820;
-            border: 1px solid #37305a;
-            border-radius: 34px;
+            background: rgba(12, 9, 24, 0.8);
+            border: 1px solid #2f2855;
+            border-radius: 32px;
             padding: 12px 18px;
             width: 100%;
-            color: white;
+            color: #f2eaff;
             font-size: 14px;
             outline: none;
+            transition: all 0.2s;
+        }
+        input:focus, select:focus {
+            border-color: #9a6eff;
+            box-shadow: 0 0 10px rgba(154,110,255,0.15);
         }
         .double {
             display: flex;
@@ -216,52 +261,71 @@
         .btn {
             border: none;
             padding: 12px 24px;
-            border-radius: 44px;
-            font-weight: 700;
+            border-radius: 40px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
+            transition: transform 0.1s ease;
+        }
+        .btn:active {
+            transform: scale(0.97);
         }
         .btn-exec {
-            background: linear-gradient(90deg, #9a40ff, #cd72ff);
+            background: linear-gradient(90deg, #8b48e0, #c282ff);
             color: white;
         }
         .btn-stop {
-            background: #9e2e4e;
-            color: white;
+            background: rgba(120, 40, 80, 0.8);
+            color: #ffccee;
+            border: 1px solid rgba(255,100,150,0.3);
         }
         .logs-window {
-            background: #03010e;
+            background: rgba(2, 1, 8, 0.7);
             border-radius: 32px;
             padding: 18px;
-            height: 260px;
+            height: 270px;
             overflow-y: auto;
-            font-family: 'Courier New', monospace;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
             font-size: 11px;
-            color: #b5f0b5;
+            color: #b0f0b0;
+            border: 1px solid rgba(140,100,220,0.2);
         }
         .toast {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: #1f1a32;
-            backdrop-filter: blur(20px);
-            border-left: 5px solid #c56eff;
+            background: rgba(25, 20, 45, 0.9);
+            backdrop-filter: blur(24px);
+            border-left: 4px solid #b27aff;
             padding: 14px 28px;
             border-radius: 60px;
-            color: white;
-            font-size: 14px;
+            color: #f0eaff;
+            font-size: 13px;
             z-index: 999;
-            transform: translateX(450px);
-            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 4px 20px black;
+            transform: translateX(500px);
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            font-weight: 500;
         }
         .toast.show {
             transform: translateX(0);
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1530;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7a55cc;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 <div class="orb"></div>
+<div class="orb2"></div>
 
 <div id="loginView" class="login-card">
     <h1>UDP FLOOD/SYN</h1>
@@ -275,10 +339,10 @@
 <div id="appPanel" class="main-panel">
     <div class="panel-header">
         <h2>SILK <span style="color:#bd7eff">SYN</span></h2>
-        <div class="version-tag">v7.2 // RAW</div>
+        <div class="version-tag">v8.0 // RAW ENGINE</div>
     </div>
     <div class="tabs-row">
-        <button class="tab-btn active" data-tab="tabDash">Głowny Panel</button>
+        <button class="tab-btn active" data-tab="tabDash">Główny Panel</button>
         <button class="tab-btn" data-tab="tabAttack">Wyjeb Bombe</button>
         <button class="tab-btn" data-tab="tabLogs">Logi</button>
     </div>
@@ -290,20 +354,20 @@
             <div class="stat-box"><div class="stat-number" id="statPpsDash">0</div><div class="label">PPS (AVG)</div></div>
         </div>
         <div class="glass-card">
-            <div style="font-weight:bold; margin-bottom:12px;">CURRENT TARGET</div>
-            <div id="dashTargetInfo">—</div>
-            <div style="margin-top:12px; font-size:12px; color:#aa9eff;" id="dashMethodInfo"></div>
+            <div style="font-weight:600; margin-bottom:12px; color:#ccb5ff;">CURRENT TARGET</div>
+            <div id="dashTargetInfo" style="font-size:18px; font-weight:500;">—</div>
+            <div style="margin-top:12px; font-size:12px; color:#aa99dd;" id="dashMethodInfo"></div>
         </div>
     </div>
 
     <div id="tabAttack" class="tab-pane">
         <div class="glass-card">
             <div style="margin-bottom: 20px;">
-                <label style="display:block; margin-bottom:6px;">TARGET (IP / DOMAIN)</label>
+                <label style="display:block; margin-bottom:8px; font-size:12px; color:#bbaaee;">TARGET (IP / DOMAIN)</label>
                 <input type="text" id="attackTarget" placeholder="example.com | 192.168.1.1">
             </div>
             <div style="margin-bottom: 20px;">
-                <label>METHOD</label>
+                <label style="display:block; margin-bottom:8px; font-size:12px; color:#bbaaee;">METHOD</label>
                 <select id="attackMethod">
                     <option value="HTTP FLOOD">HTTP FLOOD (L7)</option>
                     <option value="UDP FLOOD">UDP FLOOD (L4)</option>
@@ -312,11 +376,11 @@
                 </select>
             </div>
             <div class="double">
-                <div style="flex:1"><label>THREADS</label><input type="number" id="attackThreads" value="75" min="1"></div>
-                <div style="flex:1"><label>SPOOF IP</label><select id="attackSpoof"><option value="true">ON</option><option value="false">OFF</option></select></div>
+                <div style="flex:1"><label style="display:block; margin-bottom:8px; font-size:12px; color:#bbaaee;">THREADS</label><input type="number" id="attackThreads" value="75" min="1"></div>
+                <div style="flex:1"><label style="display:block; margin-bottom:8px; font-size:12px; color:#bbaaee;">SPOOF IP</label><select id="attackSpoof"><option value="true">ON</option><option value="false">OFF</option></select></div>
             </div>
             <div style="margin: 20px 0;">
-                <label>DURATION (seconds, 0 = infinite)</label>
+                <label style="display:block; margin-bottom:8px; font-size:12px; color:#bbaaee;">DURATION (seconds, 0 = infinite)</label>
                 <input type="number" id="attackDuration" value="35" min="0">
             </div>
             <div style="display: flex; gap: 16px; margin-top: 10px;">
@@ -328,7 +392,7 @@
 
     <div id="tabLogs" class="tab-pane">
         <div class="logs-window" id="logsContainer">
-            <div>[system] Silk SYN v7.2 online</div>
+            <div>[system] Silk SYN v8.0 online</div>
             <div>[system] DDoS engine ready</div>
         </div>
     </div>
@@ -340,7 +404,7 @@
     function toast(msg, isError) {
         var t = document.getElementById('toastMessage');
         t.textContent = msg;
-        if (isError) { t.style.borderLeftColor = '#ff667a'; } else { t.style.borderLeftColor = '#c56eff'; }
+        if (isError) { t.style.borderLeftColor = '#ff667a'; } else { t.style.borderLeftColor = '#b27aff'; }
         t.classList.add('show');
         setTimeout(function() { t.classList.remove('show'); }, 2600);
     }
